@@ -9,6 +9,10 @@
 
 node微信开发：https://i5ting.github.io/wechat-dev-with-nodejs/
 
+koa2教程: https://github.com/ikcamp/koa2-tutorial/tree/0-start
+
+小程序教程： https://github.com/ikcamp/wechat-xcx-tutorial
+
 第一个小目标：
 做一个详情页面，添加一个产品，能够支付
 
