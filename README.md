@@ -10,6 +10,9 @@
 node微信开发：https://i5ting.github.io/wechat-dev-with-nodejs/
 
 koa2教程: https://github.com/ikcamp/koa2-tutorial/tree/0-start
+koa官方文档：https://github.com/guo-yu/koa-guide
+
+nunjucks: http://mozilla.github.io/nunjucks/cn/templating.html
 
 小程序教程： https://github.com/ikcamp/wechat-xcx-tutorial
 

@@ -4,16 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index1.js"
   },
   "author": "jason",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
-    "xml2js": "^0.4.19",
-    "koa": "^2.3.0"
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.3.0",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
+    "koa-nunjucks-2": "^3.0.2",
+    "koa-static": "^4.0.2",
     "nodemon": "^1.12.1"
   }
 }
