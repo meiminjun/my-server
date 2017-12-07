@@ -16,6 +16,8 @@ nunjucks: http://mozilla.github.io/nunjucks/cn/templating.html
 
 小程序教程： https://github.com/ikcamp/wechat-xcx-tutorial
 
+肯德基：http://order.kfc.com.cn/mwos/menu
+
 第一个小目标：
 做一个详情页面，添加一个产品，能够支付
 
