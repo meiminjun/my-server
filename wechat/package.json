@@ -10,7 +10,9 @@
   "author": "jason",
   "license": "ISC",
   "dependencies": {
+    "crawler": "^1.1.2",
     "express": "^4.16.2",
+    "jsdom": "^11.5.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.3.0",
