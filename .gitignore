@@ -1,9 +1,17 @@
-.idea
+# Editor directories and files
 *.iml
 out
 gen
-node_modules/
-.vscode
 .DS_Store
+.vscode
+_Store
+node_modules/
+npm-debug.log*
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 *.sublime-project
 *.sublime-workspace
+package-lock.json
