@@ -12,16 +12,19 @@
   "dependencies": {
     "crawler": "^1.1.2",
     "express": "^4.16.2",
-    "jsdom": "^11.5.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.3.0",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
+    "https": "^1.0.0",
+    "iconv-lite": "^0.4.19",
     "koa-nunjucks-2": "^3.0.2",
     "koa-static": "^4.0.2",
     "log4js": "^2.4.1",
-    "nodemon": "^1.12.1"
+    "mkdirp": "^0.5.1",
+    "nodemon": "^1.12.1",
+    "request-promise": "^4.2.2"
   }
 }
