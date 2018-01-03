@@ -32,6 +32,7 @@ let getToken = () => {
     return new Promise((resolve, reject) => {
         https.get('https://www.xueqiu.com', (res) => {
             if (res.statusCode === 200) {
+                console.log(res.headers)
                 //resolve(res.headers['set-cookie']);
                 token = res.headers['set-cookie'][1].split(/;/)[0] + ';';
                 resolve(token);
@@ -61,10 +62,12 @@ let getPage = (token) => {
             res.on('data', (chunk) => {
                 rawData += chunk;
             });
+            // console.log(rawData)
             res.on('end', () => {
                 try {
                     let parsedData = JSON.parse(rawData);
-                    //console.log(parsedData);
+                    // console.log('解析数据')
+                    // console.log(parsedData);
                     resolve(parsedData.list);
                     console.log(`第 ${page} 页数据获取完成，将存入数据库`);
                     page++;
@@ -107,19 +110,105 @@ let getData = async function(pageUrl) {
     });
 };
 
+/**
+ * 获取基金详情（图表）
+ * @param  {[type]} token [description]
+ * @param  {[type]} code  [description]
+ * @param  {[type]} limit [description]
+ * @return {[type]}       [description]
+ */
+let getFundDetail = async function(token, code, limit) {
+    return new Promise((resolve, reject) => {
+        let client = https.get({
+            hostname: 'fund.xueqiu.com',
+            path: `/dj/open/fund/growth/${code}.json?day=${limit}`,
+            headers: {
+                'Cookie': token
+                // 'Referer': 'https://xueqiu.com/p/discover?action=money&market=cn&profit=annualized_gain_rate'
+            }
+        }, (res) => {
+            if (res.statusCode === 302) {
+                client.abort();
+            }
+            let rawData = '';
+            res.on('data', (chunk) => {
+                rawData += chunk;
+            });
+            res.on('end', () => {
+                try {
+                    let parsedData = JSON.parse(rawData);
+                    // console.log('解析数据')
+                    // console.log(parsedData);
+                    resolve(parsedData);
+                    // console.log(`第 ${page} 页数据获取完成，将存入数据库`);
+                    // page++;
+                } catch (e) {
+                    // console.log(`获取第 ${page} 页用户信息失败`);
+                }
+                // fetched++;
+            });
+        })
+    });
+}
+
+// 获取股票详情
+let getStockDetail = async function(token, code) {
+    return new Promise((resolve, reject) => {
+        let client = https.get({
+            hostname: 'xueqiu.com',
+            path: `/stock/forchart/stocklist.json?symbol=${code}&period=5d`,
+            headers: {
+                'Cookie': token
+                // 'Referer': 'https://xueqiu.com/p/discover?action=money&market=cn&profit=annualized_gain_rate'
+            }
+        }, (res) => {
+            if (res.statusCode === 302) {
+                client.abort();
+            }
+            let rawData = '';
+            res.on('data', (chunk) => {
+                rawData += chunk;
+            });
+            res.on('end', () => {
+                try {
+                    let parsedData = JSON.parse(rawData);
+                    // console.log('解析数据')
+                    console.log(parsedData);
+                    resolve(parsedData);
+                    // console.log(`第 ${page} 页数据获取完成，将存入数据库`);
+                    // page++;
+                } catch (e) {
+                    // console.log(`获取第 ${page} 页用户信息失败`);
+                }
+                // fetched++;
+            });
+        })
+    });
+}
+
+// 抓取投资股票大神的股票
+// let start = async function() {
+//     let token = await getToken();
+//     console.log('token: ' + token);
+//     while (fetched < fetchLimit) {
+//         let pageUrlList = await getPage(token);
+//         for (let i = 0; i < pageUrlList.length; i++) {
+//             let pageUrl = 'https://xueqiu.com' + '/P/' + pageUrlList[i].symbol;
+//             // 获取页面数据并用 cheerio 处理
+//             let $ = await getData(pageUrl);
+//             await savedContent($);
+//         }
+//     }
+//     console.log(`${fetched} 页数据获取完成`);
+// };
+
 let start = async function() {
     let token = await getToken();
     console.log('token: ' + token);
-    while (fetched < fetchLimit) {
-        let pageUrlList = await getPage(token);
-        for (let i = 0; i < pageUrlList.length; i++) {
-            let pageUrl = 'https://xueqiu.com' + '/P/' + pageUrlList[i].symbol;
-            // 获取页面数据并用 cheerio 处理
-            let $ = await getData(pageUrl);
-            await savedContent($);
-        }
-    }
-    console.log(`${fetched} 页数据获取完成`);
+
+    // let detail = await getStockDetail(token, 'SZ150052') // 获取某个股票详情
+    let detail = await getFundDetail(token, '000950', '180') // 获取某个基金详情: 30/60/180/360
+    console.log(detail);
 };
 
 // 打开数据集合
@@ -209,4 +298,5 @@ let savedContent = async function($) {
 };
 
 console.log(`即将抓取 ${fetchLimit} 页数据`);
+
 start();
