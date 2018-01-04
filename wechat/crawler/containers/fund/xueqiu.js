@@ -83,32 +83,42 @@ let getPage = (token) => {
     });
 };
 
-// 获取每个用户的股票数据
-let getData = async function(pageUrl) {
-    return new Promise((resolve, reject) => {
-        let client = https.get(pageUrl, (res) => {
-            if (res.statusCode !== 200) {
-                console.log('网页连接错误：' + res.statusCode);
-                client.abort();
-                reject(res.statusCode);
-            }
-            let html = '';
-            res.setEncoding('utf-8');
-            res.on('data', (chunk) => {
-                html += chunk;
-            });
-            res.on('end', async function() {
-                if (html) {
-                    const $ = cheerio.load(html);
-                    resolve($);
-                }
-            });
-        }).on('error', (err) => {
-            reject(err);
-            console.log('获取用户数据失败: ' + err);
-        });
-    });
-};
+// --------------------------基金详情-------------------------------
+/**
+ * 获取基金详情页面数据
+ * @param  {[type]} token [description]
+ * @param  {[type]} code  [description]
+ * @param  {[type]} limit [description]
+ * @return {[type]}       [description]
+ */
+let getFundDetailPage = async function(code) {
+    var fundDetail = {};
+    let pageUrl = `https://xueqiu.com/S/${code}`;
+    // 获取页面数据并用 cheerio 处理
+    let $ = await getData(pageUrl);
+    var fundName = $('.stock-name').text().trim(); // 基金名称
+    var stockCurrent = $('.stock-current').children('strong').text().trim() // 基金当前净值
+    var stockChange = $('.stock-change').text().trim() // 当前涨跌幅
+    var arr = []
+    // console.log($('.quote-info').children('tr').eq(0).children('td'))
+    $('.quote-info').children('tr').eq(0).children('td').each((index, item) => {
+        var value = $(item).children('span').text()
+        arr.push(value)
+    })
+    var oneMonth = arr[0];
+    var threeMonth = arr[1];
+    var sixMonth = arr[2];
+    var oneYear = arr[3];
+    var ratingAgencies = $('.rank-value').text().trim() // 机构评级
+    Object.assign(fundDetail, {
+        fundName,
+        stockCurrent,
+        stockChange,
+        arr
+    })
+    // console.log(fundDetail);
+    return fundDetail;
+}
 
 /**
  * 获取基金详情（图表）
@@ -151,6 +161,7 @@ let getFundDetail = async function(token, code, limit) {
     });
 }
 
+// --------------------------股票-------------------------------
 // 获取股票详情
 let getStockDetail = async function(token, code) {
     return new Promise((resolve, reject) => {
@@ -186,6 +197,33 @@ let getStockDetail = async function(token, code) {
     });
 }
 
+// 获取每个用户的股票数据
+let getData = async function(pageUrl) {
+    return new Promise((resolve, reject) => {
+        let client = https.get(pageUrl, (res) => {
+            if (res.statusCode !== 200) {
+                console.log('网页连接错误：' + res.statusCode);
+                client.abort();
+                reject(res.statusCode);
+            }
+            let html = '';
+            res.setEncoding('utf-8');
+            res.on('data', (chunk) => {
+                html += chunk;
+            });
+            res.on('end', async function() {
+                if (html) {
+                    const $ = cheerio.load(html);
+                    resolve($);
+                }
+            });
+        }).on('error', (err) => {
+            reject(err);
+            console.log('获取用户数据失败: ' + err);
+        });
+    });
+};
+// --------------------------------------------------
 // 抓取投资股票大神的股票
 // let start = async function() {
 //     let token = await getToken();
@@ -202,13 +240,14 @@ let getStockDetail = async function(token, code) {
 //     console.log(`${fetched} 页数据获取完成`);
 // };
 
+//
 let start = async function() {
     let token = await getToken();
     console.log('token: ' + token);
-
     // let detail = await getStockDetail(token, 'SZ150052') // 获取某个股票详情
-    let detail = await getFundDetail(token, '000950', '180') // 获取某个基金详情: 30/60/180/360
-    console.log(detail);
+    // let detail = await getFundDetail(token, '000950', '180') // 获取某个基金详情: 30/60/180/360
+    let detailPage = await getFundDetailPage('F000950') // 获取某个基金详情页面dom
+    console.log(detailPage)
 };
 
 // 打开数据集合
