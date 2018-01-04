@@ -1,4 +1,4 @@
-// 参考：https://github.com/fangrm/cnbetaCrawler-node
+// https://www.npmjs.com/package/request-promise
 
 var rp = require('request-promise');
 var cheerio = require('cheerio');
