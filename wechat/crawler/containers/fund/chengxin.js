@@ -1,3 +1,5 @@
+// 参考：https://github.com/fangrm/cnbetaCrawler-node
+
 var rp = require('request-promise');
 var cheerio = require('cheerio');
 
