@@ -42,12 +42,9 @@ let getInterfaceData = async function(url) {
           res.on('data', (chunk) => {
               rawData += chunk;
           });
-          console.log(rawData);
           res.on('end', () => {
               try {
                   let parsedData = JSON.parse(rawData);
-                  // console.log('解析数据')
-                  // console.log(parsedData);
                   resolve(parsedData);
               } catch (e) {
                   console.log(`获取接口数据失败`);
@@ -56,6 +53,26 @@ let getInterfaceData = async function(url) {
           });
       })
   });
+}
+
+var fundDetailData = async function(code) {
+  if (!code) return false;
+  var code = code
+  var basicUrl = `https://danjuanapp.com/djapi/fund/${code}` // 基础信息请求
+  var yejibiaoxian = `https://danjuanapp.com/djapi/fund/derived/${code}` // 业绩表现请求
+  var dangan = `https://danjuanapp.com/djapi/fund/detail/${code}` // 基金档案
+  var chart = `https://danjuanapp.com/djapi/fund/nav-growth/${code}?day=360` // 图表数据
+  var basicData = await getInterfaceData(basicUrl)
+  var yejibiaoxian = await getInterfaceData(yejibiaoxian)
+  var dangan = await getInterfaceData(dangan)
+  var chart = await getInterfaceData(chart)
+
+  return Promise.resolve({
+    basicData,
+    yejibiaoxian,
+    dangan,
+    chart
+  })
 }
 
 /**
@@ -94,11 +111,28 @@ var fundInterFace = {
   '1005': 'https://danjuanapp.com/djapi/v3/filter/fund?type=1005&order_by=td&size=20&page=1'
 }
 
+// var fundCode = ['']
+
+// 遍历数据
+var eachFun = async function() {
+  let getInterface = await getInterfaceData(fundInterFace['1004']) // 提取接口数据
+  // console.log(getInterface.data.items)
+  var items = getInterface.data.items
+  items.forEach(async (item, index)=> {
+    console.log(item.fd_name) // 基金名称
+    console.log(item.fd_code) // 基金代码
+    let detail = await fundDetailData(item.fd_code); // 获取单个基金详情数据
+    console.log(detail);
+  })
+}
+
 let start = async function() {
     // let getPageData = getPageData() // 提取页面DOM的集合数据
     // console.log(getPageData)
-    let getInterface = await getInterfaceData(fundInterFace['1004']) // 提取接口数据
-    console.log(getInterface)
+    // let getInterface = await getInterfaceData(fundInterFace['1004']) // 提取接口数据
+    // let detail = await fundDetailData('160717'); // 详情数据整合
+    // console.log(detail);
+    eachFun();
 };
 
 start();
