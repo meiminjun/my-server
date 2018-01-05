@@ -1,4 +1,4 @@
-// 参考：https://danjuanapp.com/djmodule/value-center // 估值排行
+// 参考：https://danjuanapp.com/djmodule/value-center // 蛋卷基金每日估值排行
 // https://danjuanapp.com/rank/index // 排行
 const https = require('https');
 const fs = require('fs');
@@ -32,15 +32,9 @@ let getPageDom = async function(pageUrl) {
 };
 
 // 获取接口数据
-let getInterfaceData = async function() {
+let getInterfaceData = async function(url) {
   return new Promise((resolve, reject) => {
-      let client = https.get({
-          hostname: 'danjuanapp.com',
-          path: '/djapi/index_eva/dj',
-          headers: {
-              // 'Cookie': '7bb43662bc4beede354c952766899969c1b2bbc4'
-          }
-      }, (res) => {
+      let client = https.get(url, (res) => {
           if (res.statusCode === 302) {
               client.abort();
           }
@@ -65,7 +59,7 @@ let getInterfaceData = async function() {
 }
 
 /**
- * 获取基金详情页面数据
+ * 获取详情页面数据
  * @param  {[type]} token [description]
  * @param  {[type]} code  [description]
  * @param  {[type]} limit [description]
@@ -87,10 +81,23 @@ let getPageData = async function() {
     return fundDetail;
 }
 
+var fundInterFace = {
+  // 免费指数
+  '1001': 'https://danjuanapp.com/djapi/v3/filter/fund?type=1001&order_by=td&size=20&page=1',
+  // 宽基指数
+  '1002': 'https://danjuanapp.com/djapi/v3/filter/fund?type=1002&order_by=td&size=20&page=1',
+   // 指数增强
+  '1003': 'https://danjuanapp.com/djapi/v3/filter/fund?type=1003&order_by=td&size=20&page=1',
+  // 行业指数
+  '1004': 'https://danjuanapp.com/djapi/v3/filter/fund?type=1004&order_by=td&size=20&page=1',
+  // 海外指数
+  '1005': 'https://danjuanapp.com/djapi/v3/filter/fund?type=1005&order_by=td&size=20&page=1'
+}
+
 let start = async function() {
     // let getPageData = getPageData() // 提取页面DOM的集合数据
     // console.log(getPageData)
-    let getInterface = await getInterfaceData() // 提取接口数据
+    let getInterface = await getInterfaceData(fundInterFace['1004']) // 提取接口数据
     console.log(getInterface)
 };
 
