@@ -2,8 +2,8 @@
 const https = require('https');
 const fs = require('fs');
 const cheerio = require('cheerio');
-// const MongoClient = require('mongodb').MongoClient;
-// const DB_CONN_STR = 'mongodb://localhost:27017/xueqiuDB';
+const MongoClient = require('mongodb').MongoClient;
+const DB_CONN_STR = 'mongodb://localhost:27017/xueqiuDB';
 
 const dataSavePath = './xueqiuData'; // 文章存放路径
 
@@ -226,30 +226,30 @@ let getData = async function(pageUrl) {
 };
 // --------------------------------------------------
 // 抓取投资股票大神的股票
-// let start = async function() {
-//     let token = await getToken();
-//     console.log('token: ' + token);
-//     while (fetched < fetchLimit) {
-//         let pageUrlList = await getPage(token);
-//         for (let i = 0; i < pageUrlList.length; i++) {
-//             let pageUrl = 'https://xueqiu.com' + '/P/' + pageUrlList[i].symbol;
-//             // 获取页面数据并用 cheerio 处理
-//             let $ = await getData(pageUrl);
-//             await savedContent($);
-//         }
-//     }
-//     console.log(`${fetched} 页数据获取完成`);
-// };
-
-//
 let start = async function() {
     let token = await getToken();
     console.log('token: ' + token);
-    // let detail = await getStockDetail(token, 'SZ150052') // 获取某个股票详情
-    // let detail = await getFundDetail(token, '000950', '180') // 获取某个基金详情: 30/60/180/360
-    let detailPage = await getFundDetailPage('F000950') // 获取某个基金详情页面dom
-    console.log(detailPage)
+    while (fetched < fetchLimit) {
+        let pageUrlList = await getPage(token);
+        for (let i = 0; i < pageUrlList.length; i++) {
+            let pageUrl = 'https://xueqiu.com' + '/P/' + pageUrlList[i].symbol;
+            // 获取页面数据并用 cheerio 处理
+            let $ = await getData(pageUrl);
+            await savedContent($);
+        }
+    }
+    console.log(`${fetched} 页数据获取完成`);
 };
+
+// 我的测试
+// let start = async function() {
+//     let token = await getToken();
+//     console.log('token: ' + token);
+//     // let detail = await getStockDetail(token, 'SZ150052') // 获取某个股票详情
+//     // let detail = await getFundDetail(token, '000950', '180') // 获取某个基金详情: 30/60/180/360
+//     let detailPage = await getFundDetailPage('F000950') // 获取某个基金详情页面dom
+//     console.log(detailPage)
+// };
 
 // 打开数据集合
 let openCollection = (db, collectionName) => {
@@ -323,17 +323,17 @@ let savedContent = async function($) {
 
         let x = '   ' + stockName + '--' + stockId + '\n';
         console.log(x)
-        // if (stockName && stockId) {
-        //     if (!myDb) {
-        //         myDb = await connectDB(DB_CONN_STR);
-        //     }
-        //     if (myDb !== -1) {
-        //         await insertData({
-        //             "股票名称": stockName,
-        //             "股票代码": stockId,
-        //         }, myDb);
-        //     }
-        // }
+        if (stockName && stockId) {
+            if (!myDb) {
+                myDb = await connectDB(DB_CONN_STR);
+            }
+            if (myDb !== -1) {
+                await insertData({
+                    "股票名称": stockName,
+                    "股票代码": stockId,
+                }, myDb);
+            }
+        }
     });
 };
 
