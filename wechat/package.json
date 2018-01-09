@@ -10,7 +10,8 @@
     "build:danjuan": "node crawler/containers/fund/danjuan-guzhi.js",
     "build:chengxin": "node crawler/containers/fund/chengxin.js",
     "build:index": "node crawler/containers/fund/index.js",
-    "email": "node tools/email/index.js"
+    "email": "node tools/email/index.js",
+    "tool": "node tools/index.js"
   },
   "author": "jason",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "koa-static": "^4.0.2",
     "log4js": "^2.4.1",
     "mkdirp": "^0.5.1",
+    "node-schedule": "^1.3.0",
     "nodemailer": "^4.4.1",
     "nodemon": "^1.12.1",
     "request-promise": "^4.2.2"
