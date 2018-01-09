@@ -24,6 +24,7 @@ var sendContent = {
   html: '<h1>Hello world?</h1>' // html body
 }
 
+console.log('开始执行!')
 // 每小时邮件触发
 clocking.scheduleCronstyle(config.type.h, function (nowTime) {
   sendContent.subject = '每小时触发'
