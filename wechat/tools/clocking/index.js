@@ -9,7 +9,9 @@
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
 var schedule = require('node-schedule') // 定时任务模块
-
+var moment = require('moment-timezone');
+// var zhongguo1 = moment.tz("2018-01-10 12:00", "Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss');
+var zhongguo = moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss');
 // var type = {
 //   s: '0-59 * * * * *', // 每秒触发
 //   m: '0 * * * * *', // 每分钟触发
@@ -24,6 +26,7 @@ function scheduleCronstyle (t, callback) {
   return schedule.scheduleJob(t, function () {
     var nowTime = new Date()
     console.log('scheduleCronstyle:' + nowTime)
+    console.log('zhongguo:' + zhongguo)
     callback && callback(nowTime)
   })
 }

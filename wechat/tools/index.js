@@ -26,15 +26,17 @@ var sendContent = {
 
 console.log('开始执行!')
 // 每小时邮件触发
-clocking.scheduleCronstyle(config.type.h, function (nowTime) {
+clocking.scheduleCronstyle({rule: config.type.s, timezone: 'Asia/Shanghai'}, function (nowTime) {
   sendContent.subject = '每小时触发'
-  sendContent.html += `<h1>${nowTime}</h1>`
-  email.sendMail(sendContent) // 发送邮件
+  console.log('scheduleCronstyle:' + nowTime)
+  // console.log(nowTime);
+  // sendContent.html += `<h1>${nowTime}</h1>`
+  // email.sendMail(sendContent) // 发送邮件
   console.log('每小时邮件触发成功！')
 })
 
 // 每天邮件触发
-clocking.scheduleCronstyle(config.type.d, function (nowTime) {
+clocking.scheduleCronstyle({rule: config.type.d, timezone: 'Asia/Shanghai'}, function (nowTime) {
   sendContent.subject = '每天的早上9点30分0秒触发'
   sendContent.html += `<h1>${nowTime}</h1>`
   email.sendMail(sendContent) // 发送邮件
