@@ -13,6 +13,7 @@ const connectionoptions = {
 }
 // 初始化agenda
 let agenda = new Agenda(connectionoptions)
+// var agenda = new Agenda({name: 'test queue'})
 agenda
   .name('AGENDA TEST - ' + process.pid)
   .defaultConcurrency(5)
@@ -34,13 +35,28 @@ agenda
 // })
 //
 
+function doSomelengthyTask (callback) {
+  callback()
+}
+
 agenda.define('start new play', function (job, done) {
-  console.log('new play agenda')
-  var nowTime = new Date()
-  var zhongguo = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
-  var result = '当前时间:' + zhongguo
-  console.log('服务器时间:' + nowTime)
-  console.log('中国时间:' + result)
+  doSomelengthyTask(function (data) {
+    console.log('new play agenda')
+    var nowTime = new Date()
+    var zhongguo = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+    var result = '当前时间:' + zhongguo
+    console.log('服务器时间:' + nowTime)
+    console.log('中国时间:' + result)
+      // formatThatData(data);
+      // sendThatData(data);
+    done()
+  })
+  // console.log('new play agenda')
+  // var nowTime = new Date()
+  // var zhongguo = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+  // var result = '当前时间:' + zhongguo
+  // console.log('服务器时间:' + nowTime)
+  // console.log('中国时间:' + result)
 })
 
 agenda.on('ready', function () {
