@@ -45,7 +45,10 @@ agenda.define('start new play', function (job, done) {
 
 agenda.on('ready', function () {
   // agenda.every('2 seconds', 'start new play', {}, {timezone: 'Asia/Shanghai'})
-  agenda.every('0-59 * * * * *', 'start new play')
+  agenda.schedule('0-59 * * * * *', 'start new play')
+  agenda.purge((err, numRemoved) => {
+    console.log('旧任务被移除: ', numRemoved)
+  })
   agenda.start()
 })
 
