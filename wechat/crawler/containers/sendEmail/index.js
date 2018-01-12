@@ -46,7 +46,6 @@ agenda.define('sendEmail every hours', function (job, done) {
     html: '<h1>Hello world?</h1>' // html body
   }
   sendContent.html += `<h1>${nowTime}</h1>`
-  console.log(sendContent)
   email.sendMail(sendContent, done) // 发送邮件
   console.log('每小时邮件触发成功！')
 })
