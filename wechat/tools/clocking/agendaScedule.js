@@ -5,8 +5,8 @@ const Agenda = require('agenda')
 
 const connectionoptions = {
   db: {
-    address: 'mongodb://127.0.0.1:27017/agenda',
-    // address: 'mongodb://65.49.197.35:27017/agenda', // 远程服务器地址
+    // address: 'mongodb://127.0.0.1:27017/agenda',
+    address: 'mongodb://65.49.197.35:27017/agenda', // 远程服务器地址
     collection: 'agendaJobs',
     options: { server: { auto_reconnect: true } }
   }
