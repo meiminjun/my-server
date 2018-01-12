@@ -18,13 +18,14 @@ let transporter = nodemailer.createTransport({
   }
 })
 
-function sendMail (options) {
+function sendMail (options, callback) {
   // send mail with defined transport object
   transporter.sendMail(options, (error, info) => {
     if (error) {
       return console.log(error)
     }
     console.log('Message sent: %s', info.messageId)
+    callback()
     // Message sent: <04ec7731-cc68-1ef6-303c-61b0f796b78f@qq.com>
   })
 }

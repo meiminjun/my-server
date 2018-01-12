@@ -10,6 +10,7 @@
     "build:danjuan": "node crawler/containers/fund/danjuan-guzhi.js",
     "build:chengxin": "node crawler/containers/fund/chengxin.js",
     "build:index": "node crawler/containers/fund/index.js",
+    "sendEmail": "node crawler/containers/sendEmail/index.js",
     "email": "node tools/email/index.js",
     "tool": "node tools/index.js"
   },
