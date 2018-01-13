@@ -9,7 +9,7 @@ var type = {
   s: '0-59 * * * * *', // 每秒触发
   m: '0 * * * * *', // 每分钟触发
   h: '0 0 * * * *', // 每小时触发
-  d: '0 32 15 * * *', // 每天的早上9点30分0秒触发
+  d: '0 38 15 * * *', // 每天的早上9点30分0秒触发
   m1: '0 30 12 25-31 * *', // 每月的25至31日12点30分0秒触发
   o: new Date(2018, 0, 9, 22, 53, 0) // 2018年的1月9日22点49分0秒触发, 注意月份要+1,执行完成后会终止进程
 }
@@ -46,11 +46,12 @@ function showTime () {
 
 // sendEmail every 5 分钟
 agenda.define('sendEmail every mins', function (job, done) {
+  var data = job.attrs.data
   var nowTime = showTime()
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
     to: '251222845@qq.com', // 收件箱地址
-    subject: job.subject, // 主题
+    subject: data.subject, // 主题
     // 发送text或者html格式
     // text: 'Hello world?', // plain text body
     html: '<h1>Hello world?</h1>' // html body
@@ -62,11 +63,12 @@ agenda.define('sendEmail every mins', function (job, done) {
 
 // 每天发送邮件
 agenda.define('sendEmail every day', function (job, done) {
+  var data = job.attrs.data
   var nowTime = showTime()
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
     to: '251222845@qq.com', // 收件箱地址
-    subject: job.subject, // 主题
+    subject: data.subject, // 主题
     // 发送text或者html格式
     // text: 'Hello world?', // plain text body
     html: '<h1>Hello world?</h1>' // html body
