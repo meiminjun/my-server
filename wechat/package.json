@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "agenda": "^1.0.3",
+    "ejs": "^2.5.7",
     "https": "^1.0.0",
     "iconv-lite": "^0.4.19",
     "koa-nunjucks-2": "^3.0.2",

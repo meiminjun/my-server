@@ -1,9 +1,21 @@
 // 时间举例：https://github.com/matthewmueller/date#examples
 // agenda api: https://www.npmjs.com/package/agenda
-//
+// 周期规则：https://www.npmjs.com/package/cron
+var fs = require('fs')
+var path = require('path')
 var agenda = require('../../../tools/clocking/agendaScedule.js').agenda
 var moment = require('moment-timezone')
 var email = require('../../../tools/email/index.js')
+var ejs = require('ejs')
+const template = ejs.compile(fs.readFileSync(path.resolve(__dirname, 'email-template.ejs'), 'utf8'))
+
+function rendHtml (data) {
+  const html = template(Object.assign({
+    title: 'Ejs',
+    desc: '使用Ejs渲染模板'
+  }, data || {}))
+  return html
+}
 
 var type = {
   s: '0-59 * * * * *', // 每秒触发
@@ -48,15 +60,17 @@ function showTime () {
 agenda.define('sendEmail every mins', function (job, done) {
   var data = job.attrs.data
   var nowTime = showTime()
+  var obj = Object.assign({}, data, {
+    nowTime
+  })
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
     to: '251222845@qq.com', // 收件箱地址
     subject: data.subject, // 主题
     // 发送text或者html格式
     // text: 'Hello world?', // plain text body
-    html: '<h1>Hello world?</h1>' // html body
+    html: rendHtml(obj) // html body
   }
-  sendContent.html += `<h1>${nowTime}</h1>`
   email.sendMail(sendContent, done) // 发送邮件
   console.log('每分钟触发成功！')
 })
@@ -65,22 +79,24 @@ agenda.define('sendEmail every mins', function (job, done) {
 agenda.define('sendEmail every day', function (job, done) {
   var data = job.attrs.data
   var nowTime = showTime()
+  var obj = Object.assign({}, data, {
+    nowTime
+  })
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
-    to: '251222845@qq.com', // 收件箱地址
+    to: data.to, // 收件箱地址
     subject: data.subject, // 主题
     // 发送text或者html格式
     // text: 'Hello world?', // plain text body
-    html: '<h1>Hello world?</h1>' // html body
+    html: rendHtml(obj) // html body
   }
-  sendContent.html += `<h1>${nowTime}</h1>`
   email.sendMail(sendContent, done) // 发送邮件
   console.log('每天邮件触发成功！')
 })
 
 agenda.on('ready', function () {
-  agenda.every(type.m, 'sendEmail every mins', {subject: '每秒触发'}, {timezone: 'Asia/Shanghai'})
-  agenda.every(type.d, 'sendEmail every day', {subject: '每天定点邮件'}, {timezone: 'Asia/Shanghai'})
+  agenda.every(type.s, 'sendEmail every mins', {subject: '每小时触发', to: '251222845@qq.com'}, {timezone: 'Asia/Shanghai'})
+  agenda.every(type.d, 'sendEmail every day', {subject: '每天定点邮件', to: '251222845@qq.com'}, {timezone: 'Asia/Shanghai'})
   // agenda.purge((err, numRemoved) => {
   //   console.log('旧任务被移除: ', numRemoved)
   // })

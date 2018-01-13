@@ -10,11 +10,13 @@ let transporter = nodemailer.createTransport({
   // port: 465, // SMTP 端口
   // secureConnection: true, // 使用了 SSL
   service: '163',
+  // service: 'qq',
   auth: {
-    user: '13265678360@163.com',
+    user: '13265678360@163.com', // 管理员账号
+    // user: '251222845@qq.com', // 管理员账号
     // 这里密码不是密码，是你设置的smtp授权码
-    // pass: 'hpzvmrpxhubkbiae' // qq 的授权密码
-    pass: 'meiminjun1991'
+    // pass: 'mrjjjvoprbpccaaf' // qq 的授权密码
+    pass: 'meiminjun1991' // 网易邮箱
   }
 })
 
