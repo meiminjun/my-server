@@ -81,8 +81,8 @@ agenda.define('sendEmail every day', function (job, done) {
 agenda.on('ready', function () {
   agenda.every(type.m, 'sendEmail every mins', {subject: '每秒触发'}, {timezone: 'Asia/Shanghai'})
   agenda.every(type.d, 'sendEmail every day', {subject: '每天定点邮件'}, {timezone: 'Asia/Shanghai'})
-  agenda.purge((err, numRemoved) => {
-    console.log('旧任务被移除: ', numRemoved)
-  })
+  // agenda.purge((err, numRemoved) => {
+  //   console.log('旧任务被移除: ', numRemoved)
+  // })
   agenda.start()
 })
