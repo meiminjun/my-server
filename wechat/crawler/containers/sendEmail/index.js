@@ -79,9 +79,8 @@ agenda.define('sendEmail every day', function (job, done) {
 agenda.on('ready', function () {
   var everyHours = agenda.create('sendEmail every hours', {to: 'another-guy@example.com'})
   var everyDay = agenda.create('sendEmail every day', {to: 'another-guy@example.com'})
-  // everyDay.repeatAt('10:30am', {timezone: 'Asia/Shanghai'}).save()
-  everyDay.repeatAt('2:02pm', {timezone: 'Asia/Shanghai'}).save()
-  everyHours.repeatEvery(type.m, {
+  everyDay.repeatAt('10:30', {timezone: 'Asia/Shanghai'}).save()
+  everyHours.repeatEvery(type.h, {
     timezone: 'Asia/Shanghai'
   }).save()
   agenda.purge((err, numRemoved) => {
