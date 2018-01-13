@@ -16,23 +16,26 @@ let agenda = new Agenda(connectionoptions)
 // var agenda = new Agenda({name: 'test queue'})
 agenda
   .name('AGENDA TEST - ' + process.pid)
-  .defaultConcurrency(5)
-  .defaultLockLifetime(10000)
-  // .on('start', (job) => {
-  //   console.log('检测到job启动: ', job.attrs.name)
-  // })
-  // .on('complete', (job) => {
-  //   console.log('检测到job完成: ', job.attrs.name)
-  // })
-  // .on('success', (job) => {
-  //   console.log('检测到job成功: ', job.attrs.name)
-  // })
-  // .on('fail', (job) => {
-  //   console.log('检测到job失败: ', job.attrs.name)
-  //   console.log('失败时间: ', job.attrs.failedAt)
-  //   console.log('失败原因: ', job.attrs.failReason)
-  //   agenda.stop()
-  // })
+  // .defaultConcurrency(5)
+  // .defaultLockLifetime(10000)
+  .on('start', (job) => {
+    console.log('检测到job启动: ', job.attrs.name)
+  })
+  .on('complete', (job) => {
+    // console.log('检测到job完成: ', job.attrs.name)
+  })
+  .on('success', (job) => {
+    console.log('检测到job成功: ', job.attrs.name)
+  })
+  .on('fail', (job) => {
+    console.log('检测到job失败: ', job.attrs.name)
+    console.log('失败时间: ', job.attrs.failedAt)
+    console.log('失败原因: ', job.attrs.failReason)
+    agenda.stop(() => {
+      console.log('失败退出')
+      process.exit(0)
+    })
+  })
 // // 定义任务
 // agenda.define('updateCampaignTimeout', { priority: 'high', concurrency: 3 }, (job, done) => {
 //   console.log(job)
@@ -78,24 +81,24 @@ agenda
 // })
 
 // 设置监听
-agenda.on('start', (job) => {
-  console.log('检测到job启动: ', job.attrs.name)
-})
+// agenda.on('start', (job) => {
+//   console.log('检测到job启动: ', job.attrs.name)
+// })
 
-agenda.on('complete', (job) => {
-  // console.log('检测到job完成: ', job.attrs.name)
-})
+// agenda.on('complete', (job) => {
+//   // console.log('检测到job完成: ', job.attrs.name)
+// })
 
-agenda.on('success', (job) => {
-  console.log('检测到job成功: ', job.attrs.name)
-})
+// agenda.on('success', (job) => {
+//   console.log('检测到job成功: ', job.attrs.name)
+// })
 
-agenda.on('fail', (job) => {
-  console.log('检测到job失败: ', job.attrs.name)
-  console.log('失败时间: ', job.attrs.failedAt)
-  console.log('失败原因: ', job.attrs.failReason)
-  agenda.stop()
-})
+// agenda.on('fail', (job) => {
+//   console.log('检测到job失败: ', job.attrs.name)
+//   console.log('失败时间: ', job.attrs.failedAt)
+//   console.log('失败原因: ', job.attrs.failReason)
+//   agenda.stop()
+// })
 // 最后，优雅的退出方案
 function graceful () {
   agenda.stop(() => {
