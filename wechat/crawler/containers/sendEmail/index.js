@@ -1,8 +1,18 @@
 // 时间举例：https://github.com/matthewmueller/date#examples
+// agenda api: https://www.npmjs.com/package/agenda
 //
 var agenda = require('../../../tools/clocking/agendaScedule.js').agenda
 var moment = require('moment-timezone')
 var email = require('../../../tools/email/index.js')
+
+var type = {
+  s: '0-59 * * * * *', // 每秒触发
+  m: '0 * * * * *', // 每分钟触发
+  h: '0 0 * * * *', // 每小时触发
+  d: '0 10 12 * * *', // 每天的早上9点30分0秒触发
+  m1: '0 30 12 25-31 * *', // 每月的25至31日12点30分0秒触发
+  o: new Date(2018, 0, 9, 22, 53, 0) // 2018年的1月9日22点49分0秒触发, 注意月份要+1,执行完成后会终止进程
+}
 
 function showTime () {
   var nowTime = new Date()
@@ -14,18 +24,18 @@ function showTime () {
 }
 
 // 异步job
-agenda.define('Async Job', function (job, done) {
-  doSomelengthyTask(function (data) {
-    console.log('new play Async Job')
-    var nowTime = showTime()
-    console.log(nowTime)
-    done()
-  })
-})
+// agenda.define('Async Job', function (job, done) {
+//   doSomelengthyTask(function (data) {
+//     console.log('new play Async Job')
+//     var nowTime = showTime()
+//     console.log(nowTime)
+//     done()
+//   })
+// })
 
-function doSomelengthyTask (callback) {
-  callback()
-}
+// function doSomelengthyTask (callback) {
+//   callback()
+// }
 
 // 同步方法
 // agenda.define('Sync Job', function (job) {
@@ -67,11 +77,15 @@ agenda.define('sendEmail every day', function (job, done) {
 })
 
 agenda.on('ready', function () {
-  agenda.every('2 seconds', 'Async Job', {}, {timezone: 'Asia/Shanghai'})
-  agenda.every('1 hours', 'sendEmail every hours', {}, {timezone: 'Asia/Shanghai'})
-  agenda.every('at 9:30', 'sendEmail every day', {}, {timezone: 'Asia/Shanghai'})
-  // agenda.purge((err, numRemoved) => {
-  //   console.log('旧任务被移除: ', numRemoved)
-  // })
+  var everyHours = agenda.create('sendEmail every hours', {to: 'another-guy@example.com'})
+  var everyDay = agenda.create('sendEmail every day', {to: 'another-guy@example.com'})
+  // everyDay.repeatAt('10:30am', {timezone: 'Asia/Shanghai'}).save()
+  everyDay.repeatAt('2:10pm', {timezone: 'Asia/Shanghai'}).save()
+  everyHours.repeatEvery(type.m, {
+    timezone: 'Asia/Shanghai'
+  }).save()
+  agenda.purge((err, numRemoved) => {
+    console.log('旧任务被移除: ', numRemoved)
+  })
   agenda.start()
 })

@@ -83,7 +83,7 @@ agenda.on('start', (job) => {
 })
 
 agenda.on('complete', (job) => {
-  console.log('检测到job完成: ', job.attrs.name)
+  // console.log('检测到job完成: ', job.attrs.name)
 })
 
 agenda.on('success', (job) => {
