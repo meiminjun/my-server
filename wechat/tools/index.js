@@ -29,13 +29,24 @@ console.log('开始执行!')
 // 每秒测试触发
 clocking.scheduleCronstyle({rule: config.type.s, timezone: 'Asia/Shanghai'}, function (nowTime) {
   console.log('每秒触发:' + nowTime)
+  var sendContent = {
+    from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
+    to: '13265678360@163.com', // 收件箱地址
+    subject: '每小时触发', // 主题
+    // 发送text或者html格式
+    // text: 'Hello world?', // plain text body
+    html: '<h1>Hello world?</h1>' // html body
+  }
+  sendContent.html += `<h1>${nowTime}</h1>`
+  email.sendMail(sendContent) // 发送邮件
+  console.log('每小时邮件触发成功！')
 })
 
 // 每小时邮件触发
 clocking.scheduleCronstyle({rule: config.type.h, timezone: 'Asia/Shanghai'}, function (nowTime) {
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
-    to: '251222845@qq.com', // 收件箱地址
+    to: '13265678360@163.com', // 收件箱地址
     subject: '每小时触发', // 主题
     // 发送text或者html格式
     // text: 'Hello world?', // plain text body

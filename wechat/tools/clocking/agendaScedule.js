@@ -28,9 +28,7 @@ agenda
     console.log('检测到job成功: ', job.attrs.name)
   })
   .on('fail', (job) => {
-    console.log('检测到job失败: ', job.attrs.name)
-    console.log('失败时间: ', job.attrs.failedAt)
-    console.log('失败原因: ', job.attrs.failReason)
+    console.log('检测到job失败: ', job)
     agenda.stop(() => {
       console.log('失败退出')
       process.exit(0)

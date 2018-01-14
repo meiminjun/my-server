@@ -21,6 +21,7 @@ let transporter = nodemailer.createTransport({
 })
 
 function sendMail (options, callback) {
+  console.log(options)
   // send mail with defined transport object
   transporter.sendMail(options, (error, info) => {
     if (error) {
