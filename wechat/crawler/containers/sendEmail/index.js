@@ -8,7 +8,7 @@ var moment = require('moment-timezone')
 var email = require('../../../tools/email/index.js')
 var ejs = require('ejs')
 
-var to = '13265678360@qq.com'
+var to = '13265678360@163.com'
 const template = ejs.compile(fs.readFileSync(path.resolve(__dirname, 'email-template.ejs'), 'utf8'))
 
 function rendHtml (data) {
