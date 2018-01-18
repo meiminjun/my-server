@@ -8,6 +8,8 @@ var moment = require('moment-timezone')
 var email = require('../../../tools/email/index.js')
 var ejs = require('ejs')
 
+var jindong = require('../fund/jindong.js')
+
 var to = '13265678360@163.com'
 const template = ejs.compile(fs.readFileSync(path.resolve(__dirname, 'email-template.ejs'), 'utf8'))
 
@@ -86,6 +88,7 @@ agenda.define('sendEmail every day', function (job, done) {
   var _temData = Object.assign({}, data, {
     nowTime: nowTime
   })
+  console.log(_temData)
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
     to: data.to, // 收件箱地址
@@ -98,9 +101,17 @@ agenda.define('sendEmail every day', function (job, done) {
   console.log('每天邮件触发成功！')
 })
 
+// console.log(jindong)
+// var data = await jindong.getdata()
+// console.log(data)
+
 agenda.on('ready', function () {
-  agenda.every(type.h, 'sendEmail every hour', {subject: '每小时触发', to: to}, {timezone: 'Asia/Shanghai'})
-  agenda.every(type.d, 'sendEmail every day', {subject: '每天定点邮件', to: to}, {timezone: 'Asia/Shanghai'})
+  // var data = getData()
+  var contentData = jindong.getdata()
+  console.log('获取数据')
+  console.log(contentData)
+  // agenda.every(type.h, 'sendEmail every hour', {subject: '每小时触发', to: to}, {timezone: 'Asia/Shanghai'})
+  agenda.every(type.s, 'sendEmail every day', {subject: '每天定点邮件', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
   agenda.purge((err, numRemoved) => {
     console.log('旧任务被移除: ', numRemoved)
   })

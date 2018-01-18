@@ -63,21 +63,20 @@ let getInterfaceData = async function (url) {
 
 var fundDetailData = async function (code) {
   if (!code) return false
-  var code = code
   var basicUrl = `https://danjuanapp.com/djapi/fund/${code}` // 基础信息请求
   var yejibiaoxian = `https://danjuanapp.com/djapi/fund/derived/${code}` // 业绩表现请求
   var dangan = `https://danjuanapp.com/djapi/fund/detail/${code}` // 基金档案
   var chart = `https://danjuanapp.com/djapi/fund/nav-growth/${code}?day=360` // 图表数据
-  var basicData = await getInterfaceData(basicUrl)
-  var yejibiaoxian = await getInterfaceData(yejibiaoxian)
-  var dangan = await getInterfaceData(dangan)
-  var chart = await getInterfaceData(chart)
+  var basicData = await request.getInterfaceData(basicUrl)
+  var yejibiaoxianData = await request.getInterfaceData(yejibiaoxian)
+  var danganData = await request.getInterfaceData(dangan)
+  var chartData = await request.getInterfaceData(chart)
 
   return Promise.resolve({
     basicData,
-    yejibiaoxian,
-    dangan,
-    chart
+    yejibiaoxianData,
+    danganData,
+    chartData
   })
 }
 
