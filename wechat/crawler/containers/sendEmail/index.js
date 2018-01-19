@@ -70,7 +70,7 @@ agenda.define('sendEmail every hour', function (job, done) {
     html: rendHtml(_temData) // html body
   }
   email.sendMail(sendContent, done) // 发送邮件
-  console.log('每小时邮件触发成功！')
+  console.log('测试邮件发送成功！')
 })
 
 // 每天发送邮件
@@ -88,7 +88,7 @@ agenda.define('sendEmail every day', function (job, done) {
     html: rendHtml(_temData) // html body
   }
   email.sendMail(sendContent, done) // 发送邮件
-  console.log('每小时邮件触发成功！')
+  console.log('每天邮件触发成功！')
 })
 
 agenda.on('ready', async function () {
