@@ -14,10 +14,7 @@ var to = '13265678360@163.com'
 const template = ejs.compile(fs.readFileSync(path.resolve(__dirname, 'email-template.ejs'), 'utf8'))
 
 function rendHtml (data) {
-  const html = template(Object.assign({
-    title: 'Ejs',
-    desc: '使用Ejs渲染模板'
-  }, data || {}))
+  const html = template(Object.assign({}, data))
   return html
 }
 
@@ -43,14 +40,13 @@ var type = {
 // agenda.define('Async Job', function (job, done) {
 //   doSomelengthyTask(function (data) {
 //     console.log('new play Async Job')
-//     var nowTime = showTime()
 //     done()
 //   })
 // })
 
-// function doSomelengthyTask (callback) {
-//   callback()
-// }
+function doSomelengthyTask (callback) {
+  callback()
+}
 
 // 同步方法
 // agenda.define('Sync Job', function (job) {
@@ -62,21 +58,17 @@ var type = {
 // sendEmail every 1 hours
 agenda.define('sendEmail every hour', function (job, done) {
   var data = job.attrs.data
-  var nowTime = new Date()
+  var now = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+  console.log(data)
   var _temData = Object.assign({}, data, {
-    nowTime: nowTime
+    nowTime: now
   })
-  // console.log('每秒触发:\n')
-  // console.log(_temData)
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
     to: data.to, // 收件箱地址
-    subject: data.subject, // 主题
-    // 发送text或者html格式
-    // text: 'Hello world?', // plain text body
+    subject: data.subject + '-' + now, // 主题
     html: rendHtml(_temData) // html body
   }
-  // sendContent.html += `<h1>${nowTime}</h1>`
   email.sendMail(sendContent, done) // 发送邮件
   console.log('每小时邮件触发成功！')
 })
@@ -84,36 +76,28 @@ agenda.define('sendEmail every hour', function (job, done) {
 // 每天发送邮件
 agenda.define('sendEmail every day', function (job, done) {
   var data = job.attrs.data
-  var nowTime = new Date()
+  var now = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+  console.log(data)
   var _temData = Object.assign({}, data, {
-    nowTime: nowTime
+    nowTime: now
   })
-  console.log(_temData)
   var sendContent = {
     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
     to: data.to, // 收件箱地址
-    subject: data.subject, // 主题
-    // 发送text或者html格式
-    // text: 'Hello world?', // plain text body
+    subject: data.subject + '-' + now, // 主题
     html: rendHtml(_temData) // html body
   }
   email.sendMail(sendContent, done) // 发送邮件
-  console.log('每天邮件触发成功！')
+  console.log('每小时邮件触发成功！')
 })
 
-// console.log(jindong)
-// var data = await jindong.getdata()
-// console.log(data)
-
-agenda.on('ready', function () {
-  // var data = getData()
-  var contentData = jindong.getdata()
-  console.log('获取数据')
-  console.log(contentData)
-  // agenda.every(type.h, 'sendEmail every hour', {subject: '每小时触发', to: to}, {timezone: 'Asia/Shanghai'})
-  agenda.every(type.s, 'sendEmail every day', {subject: '每天定点邮件', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
+agenda.on('ready', async function () {
   agenda.purge((err, numRemoved) => {
     console.log('旧任务被移除: ', numRemoved)
   })
+  var contentData = await jindong.getdata()
+  agenda.every(type.s, 'sendEmail every hour', {subject: '测试触发', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'}) // 必须连接本地数据库测试
+  // agenda.every(type.h, 'sendEmail every hour', {subject: '每天小时出发', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
+  agenda.every(type.d, 'sendEmail every day', {subject: '每天定点邮件', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
   agenda.start()
 })

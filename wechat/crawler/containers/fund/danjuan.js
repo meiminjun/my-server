@@ -5,7 +5,8 @@ const https = require('https')
 const cheerio = require('cheerio')
 const connectDB = require('./store/mongo.js').connectDB
 
-const DBNAME = 'mongodb://localhost:27017/Fund'
+// const DBNAME = 'mongodb://localhost:27017/Fund'
+const DBNAME = 'mongodb://65.49.197.35:27017/Fund'
 
 var myDb
 var aa = 0

@@ -1,13 +1,10 @@
 // 参考：https://fundh5.jd.com/static/platformtrade/fund/smartReport/views/heat.html?utm_source=Android&utm_term=wxfriends  // 京东金融
 
-// const https = require('https')
-// const fs = require('fs')
-// const cheerio = require('cheerio')
 const connectDB = require('./store/mongo.js').connectDB
 const request = require('../../untils/request.js')
-// const moment = require('../../untils/index.js')
 // var utils = require('../../untils')
 const DBNAME = 'mongodb://localhost:27017/Fund'
+// const DBNAME = 'mongodb://65.49.197.35:27017/Fund'
 
 // var moment = require('moment')
 var moment = require('moment-timezone')
@@ -35,7 +32,7 @@ var getData = async function () {
         if (items.length > 0) {
           myDb.close()
           console.log('已存在')
-          return Promise.resolve(false)
+          return Promise.resolve(datas)
         } else {
           await insertData(collection, datas) // 京东热度表
           return Promise.resolve(datas)
@@ -112,16 +109,26 @@ let findData = async function (collection, data, query) {
   return await findCollection(collection, data, query)
 }
 
-// var data = ''
+// let start = async function () {
 
-let start = async function () {
-  let detail = await getData() // 详情数据整合
-  console.log(detail)
-  return detail
-  // eachFun()
+//   // getData().then((data) => {
+//   //   // console.log(data)
+//   //   return data
+//   // }) // 详情数据整合
+// }
+
+// exports function async start () {
+//   var data = await getData()
+//   return data;
+// }
+
+var start = async function () {
+  var data = await getData()
+  return data;
 }
 
 module.exports = {
   getdata: start
 }
+
 // start()
