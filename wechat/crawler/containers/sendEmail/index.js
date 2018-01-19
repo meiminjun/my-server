@@ -56,22 +56,22 @@ function doSomelengthyTask (callback) {
 // })
 
 // sendEmail every 1 hours
-agenda.define('sendEmail every hour', function (job, done) {
-  var data = job.attrs.data
-  var now = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
-  console.log(data)
-  var _temData = Object.assign({}, data, {
-    nowTime: now
-  })
-  var sendContent = {
-    from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
-    to: data.to, // 收件箱地址
-    subject: data.subject + '-' + now, // 主题
-    html: rendHtml(_temData) // html body
-  }
-  email.sendMail(sendContent, done) // 发送邮件
-  console.log('测试邮件发送成功！')
-})
+// agenda.define('sendEmail every hour', function (job, done) {
+//   var data = job.attrs.data
+//   var now = moment().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
+//   console.log(data)
+//   var _temData = Object.assign({}, data, {
+//     nowTime: now
+//   })
+//   var sendContent = {
+//     from: '"管理员-梅敏君" <13265678360@163.com>', // 发件箱地址
+//     to: data.to, // 收件箱地址
+//     subject: data.subject + '-' + now, // 主题
+//     html: rendHtml(_temData) // html body
+//   }
+//   email.sendMail(sendContent, done) // 发送邮件
+//   console.log('测试邮件发送成功！')
+// })
 
 // 每天发送邮件
 agenda.define('sendEmail every day', function (job, done) {
@@ -96,8 +96,8 @@ agenda.on('ready', async function () {
     console.log('旧任务被移除: ', numRemoved)
   })
   var contentData = await jindong.getdata()
-  agenda.every(type.s, 'sendEmail every hour', {subject: '测试触发', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'}) // 必须连接本地数据库测试
+  // agenda.every(type.s, 'sendEmail every hour', {subject: '测试触发', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'}) // 必须连接本地数据库测试
   // agenda.every(type.h, 'sendEmail every hour', {subject: '每天小时出发', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
-  agenda.every(type.d, 'sendEmail every day', {subject: '每天定点邮件', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
+  agenda.every(type.d, 'sendEmail every day', {subject: '每日投资邮件', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
   agenda.start()
 })
