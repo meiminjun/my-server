@@ -33,3 +33,11 @@
  * moment.tz("Asia/Jakarta").format("YYYY/MM/DD HH:mm")  UTC時間轉為當地時間用法
  * moment.utc().format("YYYY/MM/DD HH:mmZ") 取得UTC時間用法
 ```
+
+### 发邮件和周期规则
+
+// 周期规则：https://www.npmjs.com/package/cron
+// agenda api: https://www.npmjs.com/package/agenda
+// 时间举例：https://github.com/matthewmueller/date#examples
+
+
