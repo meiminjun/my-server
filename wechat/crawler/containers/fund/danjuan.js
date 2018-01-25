@@ -1,5 +1,6 @@
 // 参考：https://danjuanapp.com/djmodule/value-center // 蛋卷基金每日估值排行
 // https://danjuanapp.com/rank/index // 排行
+// 历史数据：https://danjuanapp.com/net-history/160717
 const https = require('https')
 // const fs = require('fs')
 const cheerio = require('cheerio')
