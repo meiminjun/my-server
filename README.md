@@ -21,7 +21,7 @@ nunjucks: http://mozilla.github.io/nunjucks/cn/templating.html
 第一个小目标：
 做一个详情页面，添加一个产品，能够支付
 
-# TODO:
+# TODO
 
 - [x] 平台搭建
   - [x] 完成验证
@@ -33,5 +33,4 @@ nunjucks: http://mozilla.github.io/nunjucks/cn/templating.html
   - [ ] 添加一个详情页面
   - [ ] 小程序编写
   - [ ] 添加微信小店
-
 

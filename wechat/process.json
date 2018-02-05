@@ -1,0 +1,58 @@
+{
+    "apps": [
+        {
+            "name": "send Email",
+            "script": "./crawler/containers/sendEmail/index.js",
+            "watch": [
+                "crawler",
+                "common",
+                "configs",
+                "public",
+                "routes",
+                "views"
+            ],
+            "error_file": "./logs/crawler-err.log",
+            "out_file": "./logs/crawler-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm Z",
+            "env": {
+                "NODE_ENV": "production",
+                "REMOTE_ADDR": "http://www.example.com/"
+            },
+            "env_dev": {
+                "NODE_ENV": "development",
+                "REMOTE_ADDR": "http://wdev.example.com/"
+            },
+            "env_test": {
+                "NODE_ENV": "test",
+                "REMOTE_ADDR": "http://wtest.example.com/"
+            }
+        },
+        {
+            "name": "koa-server",
+            "script": "./index1.js",
+            "watch": [
+                "crawler",
+                "common",
+                "configs",
+                "public",
+                "routes",
+                "views"
+            ],
+            "error_file": "./logs/koa-err.log",
+            "out_file": "./logs/koa-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm Z",
+            "env": {
+                "NODE_ENV": "production",
+                "REMOTE_ADDR": "http://www.example.com/"
+            },
+            "env_dev": {
+                "NODE_ENV": "development",
+                "REMOTE_ADDR": "http://wdev.example.com/"
+            },
+            "env_test": {
+                "NODE_ENV": "test",
+                "REMOTE_ADDR": "http://wtest.example.com/"
+            }
+        }
+    ]
+}
