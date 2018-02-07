@@ -17,7 +17,7 @@ var collection
 
 var getData = async function () {
   var basicUrl = 'https://ms.jr.jd.com/gw/generic/pc_jj/h5/m/getDegreeInfo?reqData={"source":"smartH5"}' // 基础信息请求
-  var yesterday = moment().subtract('1', 'day').tz(timezone).format('YYYY.MM.DD')
+  // var yesterday = moment().subtract('1', 'day').tz(timezone).format('YYYY.MM.DD')
   // console.log(yesterday)
   var res = await request.getInterfaceData(basicUrl)
   if (res.resultCode === 0 && res.resultData.status === 'SUCCESS') {
@@ -28,7 +28,7 @@ var getData = async function () {
     if (myDb !== -1) {
       let collection = await openCollection(myDb, 'jindong_redu')
       if (collection !== -1) {
-        var items = await findData(collection, { 'degreeDate': yesterday })
+        var items = await findData(collection, { 'degreeDate': datas.degreeDate })
         if (items.length > 0) {
           myDb.close()
           console.log('已存在')
@@ -131,4 +131,6 @@ module.exports = {
   getdata: start
 }
 
-// start()
+// start().then((res) => {
+//   console.log(res)
+// })

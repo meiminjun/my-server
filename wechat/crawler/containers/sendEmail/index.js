@@ -22,7 +22,8 @@ var type = {
   s: '0-59 * * * * *', // 每秒触发
   m: '0 * * * * *', // 每分钟触发
   h: '0 0 * * * *', // 每小时触发
-  d: '0 30 9 * * *', // 每天的早上9点30分0秒触发
+  d: '00 30 12 * * *', // 每天的早上9点30分0秒触发
+  d1: '00 30 12 * * 1-5', // 每天的早上9点30分0秒触发,除了周六、周日
   m1: '0 30 12 25-31 * *', // 每月的25至31日12点30分0秒触发
   o: new Date(2018, 0, 9, 22, 53, 0) // 2018年的1月9日22点49分0秒触发, 注意月份要+1,执行完成后会终止进程
 }
@@ -96,6 +97,8 @@ agenda.on('ready', async function () {
     console.log('旧任务被移除: ', numRemoved)
   })
   var contentData = await jindong.getdata()
+  // console.log('测试数据')
+  // console.log(contentData)
   // agenda.every(type.s, 'sendEmail every hour', {subject: '测试触发', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'}) // 必须连接本地数据库测试
   // agenda.every(type.h, 'sendEmail every hour', {subject: '每天小时出发', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})
   agenda.every(type.d, 'sendEmail every day', {subject: '每日投资邮件', to: to, contentData: contentData}, {timezone: 'Asia/Shanghai'})

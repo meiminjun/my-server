@@ -16,3 +16,4 @@ npm-debug.log*
 *.sublime-workspace
 package-lock.json
 package-lock.json
+wechat/logs/

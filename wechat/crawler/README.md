@@ -1,4 +1,4 @@
-## 爬虫服务
+# 大数据服务
 
 参考: https://cnodejs.org/topic/57c529cf9b447b634391c814
 
@@ -11,6 +11,14 @@
   * https://github.com/leemunroe/responsive-html-email-template
   * https://foundation.zurb.com/emails/docs/css-guide.html
 *
+
+### 京东大数据热度表
+
+> db.jindong_redu.find().pretty()
+
+### 雪球网
+
+### 蛋卷基金
 
 
 ## 相关文档
@@ -33,3 +41,11 @@
  * moment.tz("Asia/Jakarta").format("YYYY/MM/DD HH:mm")  UTC時間轉為當地時間用法
  * moment.utc().format("YYYY/MM/DD HH:mmZ") 取得UTC時間用法
 ```
+
+### 发邮件和周期规则
+
+// 周期规则：https://www.npmjs.com/package/cron
+// agenda api: https://www.npmjs.com/package/agenda
+// 时间举例：https://github.com/matthewmueller/date#examples
+
+
