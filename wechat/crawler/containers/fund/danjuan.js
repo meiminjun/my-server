@@ -5,8 +5,8 @@ const https = require('https')
 const cheerio = require('cheerio')
 const connectDB = require('./store/mongo.js').connectDB
 
-// const DBNAME = 'mongodb://localhost:27017/Fund'
-const DBNAME = 'mongodb://65.49.197.35:27017/Fund'
+const DBNAME = 'mongodb://localhost:27017/Fund'
+// const DBNAME = 'mongodb://65.49.197.35:27017/Fund'
 
 var myDb
 var aa = 0
@@ -117,8 +117,25 @@ var fundInterFace = {
   '1005': 'https://danjuanapp.com/djapi/v3/filter/fund?type=1005&order_by=td&size=20&page=1'
 }
 
+var fundsTypeArr = [{
+  code: '1001', // 免费指数
+  interFaceUrl: 'https://danjuanapp.com/djapi/v3/filter/fund?type=1001&order_by=td&size=20&page=1'
+}, {
+  code: '1002', // 宽基指数
+  interFaceUrl: 'https://danjuanapp.com/djapi/v3/filter/fund?type=1002&order_by=td&size=20&page=1'
+}, {
+  code: '1003', // 指数增强
+  interFaceUrl: 'https://danjuanapp.com/djapi/v3/filter/fund?type=1003&order_by=td&size=20&page=1'
+}, {
+  code: '1004', // 行业指数
+  interFaceUrl: 'https://danjuanapp.com/djapi/v3/filter/fund?type=1004&order_by=td&size=20&page=1'
+}, {
+  code: '1005', // 海外指数
+  interFaceUrl: 'https://danjuanapp.com/djapi/v3/filter/fund?type=1005&order_by=td&size=20&page=1'
+}]
+
 // 遍历数据
-var eachFun = async function () {
+var eachFun = async function (arr) {
   let getInterface = await getInterfaceData(fundInterFace['1004']) // 提取接口数据
   // console.log(getInterface.data.items)
   var items = getInterface.data.items
@@ -133,10 +150,7 @@ var eachFun = async function () {
       myDb = await connectDB(DBNAME)
     }
     if (myDb !== -1) {
-      await insertData({
-        '基金代码': item.fd_code,
-        '基金名称': item.fd_name
-      }, myDb, 'fund_zhishu_paimin')
+      await insertData(item, myDb, 'fund_kuanji_zhishu_paimin')
     }
   })
 }
