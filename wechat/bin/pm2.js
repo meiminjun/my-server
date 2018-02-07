@@ -1,4 +1,8 @@
 var pm2 = require('pm2');
+// var shell = require('shelljs')
+
+// var logDir = './logs/'
+// shell.rm('-f', logDir);
 
 pm2.connect(function (err) {
     if (err) {

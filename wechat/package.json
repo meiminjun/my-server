@@ -13,7 +13,7 @@
     "sendEmail": "node crawler/containers/sendEmail/index.js",
     "email": "node tools/email/index.js",
     "tool": "node tools/index.js",
-    "pm2": "NODE_ENV=production node bin/pm2.js"
+    "pm2": "NODE_ENV=production node ./bin/pm2.js"
   },
   "author": "jason",
   "license": "ISC",
@@ -40,6 +40,7 @@
     "nodemailer": "^4.4.1",
     "nodemon": "^1.12.1",
     "pm2": "^2.9.3",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "shelljs": "^0.8.1"
   }
 }
