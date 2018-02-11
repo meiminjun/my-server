@@ -6,7 +6,7 @@ gen
 .vscode
 _Store
 node_modules/
-npm-debug.log*
+*.log
 .idea
 *.suo
 *.ntvs*
@@ -17,3 +17,4 @@ npm-debug.log*
 package-lock.json
 package-lock.json
 wechat/logs/
+*.log

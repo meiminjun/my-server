@@ -4,6 +4,7 @@ const miLog = require('./mi-log')
 const bodyParser = require('koa-bodyparser')
 const nunjucks = require('koa-nunjucks-2')
 const staticFiles = require('koa-static')
+const meiHttp = require('./mei-http');
 
 module.exports = (app) => {
   // 注册中间件
@@ -19,4 +20,5 @@ module.exports = (app) => {
   }))
   app.use(bodyParser())
   app.use(miSend())
+  app.use(meiHttp())
 }
