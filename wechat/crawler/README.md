@@ -1,6 +1,8 @@
-# 大数据服务
+# 数据服务
 
 参考: `https://cnodejs.org/topic/57c529cf9b447b634391c814`
+
+我的远程数据库： mongodb://65.49.197.35:27017
 
 ## 量化投资软件
 
@@ -46,3 +48,9 @@
 // 周期规则：`https://www.npmjs.com/package/cron`
 // agenda api: `https://www.npmjs.com/package/agenda`
 // 时间举例：`https://github.com/matthewmueller/date#examples`
+
+## 说明
+
+### 工具
+
+[mongodb GUI 工具](https://robomongo.org/download)
