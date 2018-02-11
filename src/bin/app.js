@@ -1,6 +1,6 @@
 const express = require('express'), //express 框架
-      wechat = require('../server/index'),
-       config = require('../config');//引入配置文件
+      wechat = require('../wechat/index'),
+       config = require('../wechat/config');//引入配置文件
 
 var app = express();//实例express框架
 

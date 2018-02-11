@@ -6,7 +6,7 @@
         },
         {
             "name": "send Email",
-            "script": "./crawler/containers/sendEmail/index.js",
+            "script": "./containers/crawler/containers/sendEmail/index.js",
             "watch": [
                 "crawler"
             ],
@@ -47,13 +47,6 @@
                 "NODE_ENV": "test",
                 "REMOTE_ADDR": "http://wtest.example.com/"
             }
-        },
-        {
-            "name": "wechat",
-            "script": "./bin/app.js",
-            "error_file": "./logs/express-err.log",
-            "out_file": "./logs/express-out.log",
-            "log_date_format": "YYYY-MM-DD HH:mm Z"
         }
     ]
 }

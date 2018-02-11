@@ -3,7 +3,6 @@
 out
 gen
 .DS_Store
-.vscode
 _Store
 node_modules/
 *.log

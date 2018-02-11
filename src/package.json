@@ -6,11 +6,11 @@
   "scripts": {
     "start": "nodemon ./bin/app.js",
     "start:koa": "nodemon ./bin/koa-app.js",
-    "build:xueqiu": "node crawler/containers/fund/xueqiu.js",
-    "build:chengxin": "node crawler/containers/fund/chengxin.js",
-    "build:index": "node crawler/containers/fund/index.js",
-    "build:danjuan": "node crawler/containers/fund/danjuan.js",
-    "sendEmail": "node crawler/containers/sendEmail/index.js",
+    "build:xueqiu": "node containers/crawler/containers/fund/xueqiu.js",
+    "build:chengxin": "node containers/crawler/containers/fund/chengxin.js",
+    "build:index": "node containers/crawler/containers/fund/index.js",
+    "build:danjuan": "node containers/crawler/containers/fund/danjuan.js",
+    "sendEmail": "node containers/crawler/containers/sendEmail/index.js",
     "email": "node tools/email/index.js",
     "tool": "node tools/index.js",
     "pm2": "NODE_ENV=production node ./bin/pm2.js"

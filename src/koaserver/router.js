@@ -2,9 +2,11 @@ const router = require('koa-router')()
 const HomeController = require('./controller/home')
 const Fund = require('./controller/fund')
 
+
 module.exports = (app) => {
 
-  router.get( '/', HomeController.index )
+  // ----------------------页面服务---------------------------------------
+  router.get( '/index', HomeController.index )
 
   router.get('/home', HomeController.home)
 
@@ -24,4 +26,7 @@ module.exports = (app) => {
   router.get('/getFundArchives/:code', Fund.getFundArchives) // 获取基金档案
 
   app.use(router.routes()).use(router.allowedMethods())
+
+  // ----------------------公众号服务---------------------------------------
+
 }
