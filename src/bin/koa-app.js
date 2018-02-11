@@ -1,5 +1,5 @@
-const wechat = require('../server/index')
-const config = require('../config') //引入配置文件
+const wechat = require('../containers/wechat/index')
+const config = require('../containers/wechat/config') //引入配置文件
 const koa = require('koa')
 const router = require('../koaserver/router')
 

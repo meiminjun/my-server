@@ -2,6 +2,10 @@ const router = require('koa-router')()
 const HomeController = require('./controller/home')
 const Fund = require('./controller/fund')
 
+const wechat = require('../containers/wechat/index')
+const wechatConfig = require('../containers/wechat/config');//引入配置文件
+var wechatApp = new wechat(wechatConfig); //实例wechat 模块
+
 
 module.exports = (app) => {
 
@@ -25,8 +29,25 @@ module.exports = (app) => {
 
   router.get('/getFundArchives/:code', Fund.getFundArchives) // 获取基金档案
 
-  app.use(router.routes()).use(router.allowedMethods())
-
   // ----------------------公众号服务---------------------------------------
+  router.get('/', wechatApp.auth())
 
+  //用于处理所有进入 80 端口 post 的连接请求
+  router.post('/', function (req, res) {
+    wechatApp.handleMsg(req, res);
+  })
+
+  //用于请求获取 access_token
+  router.get('/getAccessToken', function () {
+    wechatApp.getAccessToken().then(function (data) {
+      res.send(data);
+    })
+  })
+
+
+
+
+
+  // ----------------------汇总方法---------------------------------------
+  app.use(router.routes()).use(router.allowedMethods())
 }
