@@ -192,8 +192,11 @@ WeChat.prototype.getAccessToken = function () {
 WeChat.prototype.handleMsg = function (ctx, next) {
   var buffer = [], that = this
   var query = ctx.request.body;
-  console.log('请求参数')
   console.log(query)
+  console.log('request:')
+  console.log(ctx.request);
+  console.log('body:');
+  console.log(ctx.body);
   // 实例微信消息加解密
   var cryptoGraphy = new CryptoGraphy(that.config, query)
   console.log('cryptoGraphy:')
@@ -209,7 +212,6 @@ WeChat.prototype.handleMsg = function (ctx, next) {
     parseString(msgXml, { explicitArray: false }, function (err, result) {
       if (!err) {
         console.log(result)
-        result = result.xml
         // 判断消息加解密方式
         if (query.encrypt_type == 'aes') {
           // 对加密数据解密
