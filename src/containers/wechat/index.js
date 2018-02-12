@@ -220,12 +220,10 @@ WeChat.prototype.handleMsg = function (ctx, next) {
         var toUser = result.ToUserName // 接收方微信
         var fromUser = result.FromUserName// 发送仿微信
         var reportMsg = '' // 声明回复消息的变量
-        console.log(toUser)
+        console.log('接收方' + toUser)
         console.log(result)
-        result = result.xml
-        console.log(result);
         // 判断消息类型
-        if (result.MsgType.toLowerCase() === 'event') {
+        if (result.xml.MsgType.toLowerCase() === 'event') {
           // 判断事件类型
           switch (result.Event.toLowerCase()) {
             case 'subscribe':
@@ -248,7 +246,7 @@ WeChat.prototype.handleMsg = function (ctx, next) {
           }
         } else {
           // 判断消息类型为 文本消息
-          if (result.MsgType.toLowerCase() === 'text') {
+          if (result.xml.MsgType.toLowerCase() === 'text') {
             // 根据消息内容返回消息信息
             switch (result.Content) {
               case '1':
