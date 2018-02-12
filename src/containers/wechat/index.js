@@ -212,18 +212,19 @@ WeChat.prototype.handleMsg = function (ctx, next) {
     parseString(msgXml, { explicitArray: false }, function (err, result) {
       if (!err) {
         console.log(result)
+        var result = result.xml
         // 判断消息加解密方式
         if (query.encrypt_type == 'aes') {
           // 对加密数据解密
           result = cryptoGraphy.decryptMsg(result.Encrypt)
         }
-        var toUser = result.xml.ToUserName // 接收方微信
-        var fromUser = result.xml.FromUserName// 发送仿微信
+        var toUser = result.ToUserName // 接收方微信
+        var fromUser = result.FromUserName// 发送仿微信
         var reportMsg = '' // 声明回复消息的变量
         console.log('接收方' + toUser)
         console.log(result)
         // 判断消息类型
-        if (result.xml.MsgType.toLowerCase() === 'event') {
+        if (result.MsgType.toLowerCase() === 'event') {
           // 判断事件类型
           switch (result.Event.toLowerCase()) {
             case 'subscribe':
@@ -246,7 +247,7 @@ WeChat.prototype.handleMsg = function (ctx, next) {
           }
         } else {
           // 判断消息类型为 文本消息
-          if (result.xml.MsgType.toLowerCase() === 'text') {
+          if (result.MsgType.toLowerCase() === 'text') {
             // 根据消息内容返回消息信息
             switch (result.Content) {
               case '1':
