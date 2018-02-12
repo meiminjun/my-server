@@ -256,6 +256,8 @@ WeChat.prototype.handleMsg = function (ctx, next) {
             }
           }
         }
+        console.log('调试1')
+        console.log(ctx.req.query)
         // 判断消息加解密方式，如果未加密则使用明文，对明文消息进行加密
         reportMsg = ctx.req.query.encrypt_type == 'aes' ? cryptoGraphy.encryptMsg(reportMsg) : reportMsg
         ctx.response.body = reportMsg
