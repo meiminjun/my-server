@@ -218,6 +218,7 @@ WeChat.prototype.handleMsg = function (ctx, next) {
         var toUser = result.ToUserName // 接收方微信
         var fromUser = result.FromUserName// 发送仿微信
         var reportMsg = '' // 声明回复消息的变量
+        console.log(result)
         // 判断消息类型
         if (result.MsgType.toLowerCase() === 'event') {
           // 判断事件类型
