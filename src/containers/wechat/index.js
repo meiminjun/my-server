@@ -16,35 +16,35 @@ const crypto = require('crypto'), // 引入加密模块
  * @param {JSON} config 微信配置文件
  */
 var WeChat = function (config) {
-    // 设置 WeChat 对象属性 config
+  // 设置 WeChat 对象属性 config
   this.config = config
-    // 设置 WeChat 对象属性 token
+  // 设置 WeChat 对象属性 token
   this.token = config.token
-    // 设置 WeChat 对象属性 appID
+  // 设置 WeChat 对象属性 appID
   this.appID = config.appID
-    // 设置 WeChat 对象属性 appScrect
+  // 设置 WeChat 对象属性 appScrect
   this.appScrect = config.appScrect
-    // 设置 WeChat 对象属性 apiDomain
+  // 设置 WeChat 对象属性 apiDomain
   this.apiDomain = config.apiDomain
-    // 设置 WeChat 对象属性 apiURL
+  // 设置 WeChat 对象属性 apiURL
   this.apiURL = config.apiURL
 
-    /**
-     * 用于处理 https Get请求方法
-     * @param {String} url 请求地址
-     */
+  /**
+   * 用于处理 https Get请求方法
+   * @param {String} url 请求地址
+   */
   this.requestGet = function (url) {
     return new Promise(function (resolve, reject) {
       https.get(url, function (res) {
         var buffer = [], result = ''
-                // 监听 data 事件
+        // 监听 data 事件
         res.on('data', function (data) {
           buffer.push(data)
         })
-                // 监听 数据传输完成事件
+        // 监听 数据传输完成事件
         res.on('end', function () {
           result = Buffer.concat(buffer).toString('utf-8')
-                    // 将最后结果返回
+          // 将最后结果返回
           resolve(result)
         })
       }).on('error', function (err) {
@@ -53,24 +53,24 @@ var WeChat = function (config) {
     })
   }
 
-    /**
-     * 用于处理 https Post请求方法
-     * @param {String} url  请求地址
-     * @param {JSON} data 提交的数据
-     */
+  /**
+   * 用于处理 https Post请求方法
+   * @param {String} url  请求地址
+   * @param {JSON} data 提交的数据
+   */
   this.requestPost = function (url, data) {
     return new Promise(function (resolve, reject) {
-            // 解析 url 地址
+      // 解析 url 地址
       var urlData = urltil.parse(url)
-            // 设置 https.request  options 传入的参数对象
+      // 设置 https.request  options 传入的参数对象
       var options = {
-                // 目标主机地址
+        // 目标主机地址
         hostname: urlData.hostname,
-                // 目标地址
+        // 目标地址
         path: urlData.path,
-                // 请求方法
+        // 请求方法
         method: 'POST',
-                // 头部协议
+        // 头部协议
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': Buffer.byteLength(data, 'utf-8')
@@ -78,22 +78,22 @@ var WeChat = function (config) {
       }
       var req = https.request(options, function (res) {
         var buffer = [], result = ''
-                // 用于监听 data 事件 接收数据
+        // 用于监听 data 事件 接收数据
         res.on('data', function (data) {
           buffer.push(data)
         })
-                 // 用于监听 end 事件 完成数据的接收
+        // 用于监听 end 事件 完成数据的接收
         res.on('end', function () {
           result = Buffer.concat(buffer).toString('utf-8')
           resolve(result)
         })
       })
-            // 监听错误事件
-            .on('error', function (err) {
-              console.log(err)
-              reject(err)
-            })
-            // 传入数据
+        // 监听错误事件
+        .on('error', function (err) {
+          console.log(err)
+          reject(err)
+        })
+      // 传入数据
       req.write(data)
       req.end()
     })
@@ -105,7 +105,7 @@ var WeChat = function (config) {
  * @param {Request} req Request 对象
  * @param {Response} res Response 对象
  */
-WeChat.prototype.auth = function (req, res) {
+WeChat.prototype.auth = function (ctx, next) {
   var that = this
   this.getAccessToken().then(function (data) {
     // 格式化请求连接
@@ -117,11 +117,12 @@ WeChat.prototype.auth = function (req, res) {
     })
   })
 
+  var query = ctx.request.query;
   // 1.获取微信服务器Get请求的参数 signature、timestamp、nonce、echostr
-  var signature = req.query.signature, // 微信加密签名
-    timestamp = req.query.timestamp, // 时间戳
-    nonce = req.query.nonce, // 随机数
-    echostr = req.query.echostr// 随机字符串
+  var signature = query.signature, // 微信加密签名
+    timestamp = query.timestamp, // 时间戳
+    nonce = query.nonce, // 随机数
+    echostr = query.echostr// 随机字符串
 
   // 2.将token、timestamp、nonce三个参数进行字典序排序
   var array = [this.token, timestamp, nonce]
@@ -134,9 +135,9 @@ WeChat.prototype.auth = function (req, res) {
 
   // 4.开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
   if (resultCode === signature) {
-    res.send(echostr)
+    ctx.response.body = 'echostr'
   } else {
-    res.send('匹配错误!')
+    ctx.response.body = '匹配错误!'
   }
 }
 
@@ -146,29 +147,29 @@ WeChat.prototype.auth = function (req, res) {
 WeChat.prototype.getAccessToken = function () {
   var that = this
   return new Promise(function (resolve, reject) {
-        // 获取当前时间
+    // 获取当前时间
     var currentTime = new Date().getTime()
-        // 格式化请求地址
+    // 格式化请求地址
     var url = util.format(that.apiURL.accessTokenApi, that.apiDomain, that.appID, that.appScrect)
     console.log(url)
-        // 判断 本地存储的 access_token 是否有效
+    // 判断 本地存储的 access_token 是否有效
     if (accessTokenJson.access_token === '' || accessTokenJson.expires_time < currentTime) {
       that.requestGet(url).then(function (data) {
         var result = JSON.parse(data)
         if (data.indexOf('errcode') < 0) {
           accessTokenJson.access_token = result.access_token
           accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000
-                    // 更新本地存储的
+          // 更新本地存储的
           fs.writeFile('./wechat/access_token.json', JSON.stringify(accessTokenJson))
-                    // 将获取后的 access_token 返回
+          // 将获取后的 access_token 返回
           resolve(accessTokenJson.access_token)
         } else {
-                    // 将错误返回
+          // 将错误返回
           resolve(result)
         }
       })
     } else {
-            // 将本地存储的 access_token 返回
+      // 将本地存储的 access_token 返回
       resolve(accessTokenJson.access_token)
     }
   })
@@ -179,38 +180,37 @@ WeChat.prototype.getAccessToken = function () {
  * @param {Request} req Request 对象
  * @param {Response} res Response 对象
  */
-WeChat.prototype.handleMsg = function (req, res) {
+WeChat.prototype.handleMsg = function (ctx, next) {
   var buffer = [], that = this
+  var query = ctx.request.body;
+  // 实例微信消息加解密
+  var cryptoGraphy = new CryptoGraphy(that.config, query)
 
-    // 实例微信消息加解密
-  var cryptoGraphy = new CryptoGraphy(that.config, req)
-
-    // 监听 data 事件 用于接收数据
-  req.on('data', function (data) {
+  // 监听 data 事件 用于接收数据
+  ctx.req.on('data', function (data) {
     buffer.push(data)
   })
-    // 监听 end 事件 用于处理接收完成的数据
-  req.on('end', function () {
+  // 监听 end 事件 用于处理接收完成的数据
+  ctx.req.on('end', function () {
     var msgXml = Buffer.concat(buffer).toString('utf-8')
-        // 解析xml
-    parseString(msgXml, {explicitArray: false}, function (err, result) {
+    // 解析xml
+    parseString(msgXml, { explicitArray: false }, function (err, result) {
       if (!err) {
         result = result.xml
-                // 判断消息加解密方式
-        if (req.query.encrypt_type == 'aes') {
-                    // 对加密数据解密
+        // 判断消息加解密方式
+        if (query.encrypt_type == 'aes') {
+          // 对加密数据解密
           result = cryptoGraphy.decryptMsg(result.Encrypt)
         }
         var toUser = result.ToUserName // 接收方微信
         var fromUser = result.FromUserName// 发送仿微信
         var reportMsg = '' // 声明回复消息的变量
-
-                // 判断消息类型
+        // 判断消息类型
         if (result.MsgType.toLowerCase() === 'event') {
-                    // 判断事件类型
+          // 判断事件类型
           switch (result.Event.toLowerCase()) {
             case 'subscribe':
-                            // 回复消息
+              // 回复消息
               var content = '欢迎关注 鑫雅格包装 公众号，我们竭诚为您提供最好的服务。回复以下数字：\n'
               content += '1.你是谁\n'
               content += '2.关于鑫雅格\n'
@@ -219,18 +219,18 @@ WeChat.prototype.handleMsg = function (req, res) {
               break
             case 'click':
               var contentArr = [
-                                {Title: 'Node.js 微信自定义菜单', Description: '使用Node.js实现自定义微信菜单', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72868520'},
-                                {Title: 'Node.js access_token的获取、存储及更新', Description: 'Node.js access_token的获取、存储及更新', PicUrl: 'http://img.blog.csdn.net/20170528151333883?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72783631'},
-                                {Title: 'Node.js 接入微信公众平台开发', Description: 'Node.js 接入微信公众平台开发', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72765279'}
+                { Title: 'Node.js 微信自定义菜单', Description: '使用Node.js实现自定义微信菜单', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72868520' },
+                { Title: 'Node.js access_token的获取、存储及更新', Description: 'Node.js access_token的获取、存储及更新', PicUrl: 'http://img.blog.csdn.net/20170528151333883?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72783631' },
+                { Title: 'Node.js 接入微信公众平台开发', Description: 'Node.js 接入微信公众平台开发', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72765279' }
               ]
-                            // 回复图文消息
+              // 回复图文消息
               reportMsg = msg.graphicMsg(fromUser, toUser, contentArr)
               break
           }
         } else {
-                     // 判断消息类型为 文本消息
+          // 判断消息类型为 文本消息
           if (result.MsgType.toLowerCase() === 'text') {
-                        // 根据消息内容返回消息信息
+            // 根据消息内容返回消息信息
             switch (result.Content) {
               case '1':
                 reportMsg = msg.txtMsg(fromUser, toUser, 'Hello ！我的名字叫做梅敏君！')
@@ -240,11 +240,11 @@ WeChat.prototype.handleMsg = function (req, res) {
                 break
               case '文章':
                 var contentArr = [
-                                    {Title: 'Node.js 微信自定义菜单', Description: '使用Node.js实现自定义微信菜单', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72868520'},
-                                    {Title: 'Node.js access_token的获取、存储及更新', Description: 'Node.js access_token的获取、存储及更新', PicUrl: 'http://img.blog.csdn.net/20170528151333883?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72783631'},
-                                    {Title: 'Node.js 接入微信公众平台开发', Description: 'Node.js 接入微信公众平台开发', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72765279'}
+                  { Title: 'Node.js 微信自定义菜单', Description: '使用Node.js实现自定义微信菜单', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72868520' },
+                  { Title: 'Node.js access_token的获取、存储及更新', Description: 'Node.js access_token的获取、存储及更新', PicUrl: 'http://img.blog.csdn.net/20170528151333883?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72783631' },
+                  { Title: 'Node.js 接入微信公众平台开发', Description: 'Node.js 接入微信公众平台开发', PicUrl: 'http://img.blog.csdn.net/20170605162832842?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHZrQ29kZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast', Url: 'http://blog.csdn.net/hvkcoder/article/details/72765279' }
                 ]
-                                // 回复图文消息
+                // 回复图文消息
                 reportMsg = msg.graphicMsg(fromUser, toUser, contentArr)
                 break
               default:
@@ -253,12 +253,13 @@ WeChat.prototype.handleMsg = function (req, res) {
             }
           }
         }
-                // 判断消息加解密方式，如果未加密则使用明文，对明文消息进行加密
+        // 判断消息加解密方式，如果未加密则使用明文，对明文消息进行加密
         reportMsg = req.query.encrypt_type == 'aes' ? cryptoGraphy.encryptMsg(reportMsg) : reportMsg
-                // 返回给微信服务器
-        res.send(reportMsg)
+        ctx.response.body = reportMsg
+        // 返回给微信服务器
+        // res.send(reportMsg)
       } else {
-                // 打印错误
+        // 打印错误
         console.log(err)
       }
     })

@@ -30,17 +30,20 @@ module.exports = (app) => {
   router.get('/getFundArchives/:code', Fund.getFundArchives) // 获取基金档案
 
   // ----------------------公众号服务---------------------------------------
-  router.get('/', wechatApp.auth())
+  router.get('/', async (ctx, next) => {
+    wechatApp.auth(ctx, next)
+  })
 
   //用于处理所有进入 80 端口 post 的连接请求
-  router.post('/', function (req, res) {
-    wechatApp.handleMsg(req, res);
+  router.post('/', async (ctx, next) => {
+    wechatApp.handleMsg(ctx, next)
   })
 
   //用于请求获取 access_token
-  router.get('/getAccessToken', function () {
+  router.get('/getAccessToken', async (ctx, next) => {
     wechatApp.getAccessToken().then(function (data) {
-      res.send(data);
+      // ctx.send(data);
+      ctx.response.body = data;
     })
   })
 
