@@ -217,8 +217,8 @@ WeChat.prototype.handleMsg = function (ctx, next) {
           // 对加密数据解密
           result = cryptoGraphy.decryptMsg(result.Encrypt)
         }
-        var toUser = result.ToUserName // 接收方微信
-        var fromUser = result.FromUserName// 发送仿微信
+        var toUser = result.xml.ToUserName // 接收方微信
+        var fromUser = result.xml.FromUserName// 发送仿微信
         var reportMsg = '' // 声明回复消息的变量
         console.log('接收方' + toUser)
         console.log(result)
