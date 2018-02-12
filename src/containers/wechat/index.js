@@ -162,10 +162,16 @@ WeChat.prototype.getAccessToken = function () {
         if (data.indexOf('errcode') < 0) {
           accessTokenJson.access_token = result.access_token
           accessTokenJson.expires_time = new Date().getTime() + (parseInt(result.expires_in) - 200) * 1000
+          fs.writeFile('./access_token.json', JSON.stringify(accessTokenJson), function (err) {
+            if (err) {
+              throw err;
+            }
+            // 将获取后的 access_token 返回
+            resolve(accessTokenJson.access_token)
+          });
           // 更新本地存储的
-          fs.writeFile('./wechat/access_token.json', JSON.stringify(accessTokenJson))
-          // 将获取后的 access_token 返回
-          resolve(accessTokenJson.access_token)
+          // fs.writeFile('./access_token.json', JSON.stringify(accessTokenJson))
+          
         } else {
           // 将错误返回
           resolve(result)
@@ -256,8 +262,8 @@ WeChat.prototype.handleMsg = function (ctx, next) {
             }
           }
         }
-        console.log('调试1')
-        console.log(query)
+        // console.log('调试1')
+        // console.log(query)
         // 判断消息加解密方式，如果未加密则使用明文，对明文消息进行加密
         reportMsg = query.encrypt_type == 'aes' ? cryptoGraphy.encryptMsg(reportMsg) : reportMsg
         ctx.response.body = reportMsg
