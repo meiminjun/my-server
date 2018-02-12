@@ -3,9 +3,9 @@
 // 周期规则：https://www.npmjs.com/package/cron
 var fs = require('fs')
 var path = require('path')
-var agenda = require('../../../tools/clocking/agendaScedule.js').agenda
+var agenda = require('../../tools/clocking/agendaScedule.js').agenda
 var moment = require('moment-timezone')
-var email = require('../../../tools/email/index.js')
+var email = require('../../tools/email/index.js')
 var ejs = require('ejs')
 
 var jindong = require('../fund/jindong.js')
