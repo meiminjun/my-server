@@ -116,8 +116,11 @@ WeChat.prototype.auth = function (ctx, next) {
       console.log(data)
     })
   })
-
-  var query = ctx.request.query;
+  console.log('request')
+  console.log(ctx.request)
+  var query = ctx.request.query
+  console.log('测试')
+  console.log(query)
   // 1.获取微信服务器Get请求的参数 signature、timestamp、nonce、echostr
   var signature = query.signature, // 微信加密签名
     timestamp = query.timestamp, // 时间戳
