@@ -167,7 +167,7 @@ WeChat.prototype.getAccessToken = function () {
               throw err;
             }
             // 将获取后的 access_token 返回
-            resolve(accessTokenJson.access_token)
+            resolve(accessTokenJson)
           });
           // 更新本地存储的
           // fs.writeFile('./access_token.json', JSON.stringify(accessTokenJson))

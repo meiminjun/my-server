@@ -41,10 +41,17 @@ module.exports = (app) => {
 
   //用于请求获取 access_token
   router.get('/getAccessToken', async (ctx, next) => {
-    wechatApp.getAccessToken().then(function (data) {
-      // ctx.send(data);
-      ctx.response.body = data;
-    })
+    try {
+      var data = await wechatApp.getAccessToken()
+      console.log('测试返回')
+      console.log(data)
+      ctx.send(data)
+    } catch (err) {
+      console.log('err')
+      console.log(err)
+      ctx.response.body = err
+    }
+    
   })
 
 
