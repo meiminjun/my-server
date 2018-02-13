@@ -1,0 +1,16 @@
+{
+  "name": "mei-wechat",
+  "version": "1.0.0",
+  "description": "Wechat example developed by Koa2",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=product node index.js",
+    "dev": "node index.js"
+  },
+  "author": "meiminjun",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.5.0",
+    "koa-router": "^7.4.0"
+  }
+}

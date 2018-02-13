@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./bin/app.js",
-    "start:koa": "nodemon ./bin/koa-app.js",
     "build:xueqiu": "node containers/crawler/containers/fund/xueqiu.js",
     "build:chengxin": "node containers/crawler/containers/fund/chengxin.js",
     "build:index": "node containers/crawler/containers/fund/index.js",
@@ -13,16 +12,18 @@
     "sendEmail": "node containers/crawler/containers/sendEmail/index.js",
     "email": "node tools/email/index.js",
     "tool": "node tools/index.js",
-    "pm2": "NODE_ENV=production node ./bin/pm2.js"
+    "pm2": "NODE_ENV=production node ./bin/pm2.js",
+    "start:koa": "NAME=koa nodemon ./bin/start.js",
+    "start:wechat": "NAME=wechat nodemon ./bin/start.js"
   },
   "author": "jason",
   "license": "ISC",
   "dependencies": {
     "crawler": "^1.1.2",
     "express": "^4.16.2",
-    "koa": "^2.3.0",
+    "koa": "^2.5.0",
+    "koa-router": "^7.4.0",
     "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.3.0",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {

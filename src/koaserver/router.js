@@ -6,6 +6,9 @@ const wechat = require('../containers/wechat/index')
 const wechatConfig = require('../containers/wechat/config');//引入配置文件
 var wechatApp = new wechat(wechatConfig); //实例wechat 模块
 
+const Wechat = require('../containers/wechat/index')
+const config = require('../containers/wechat/config')
+const w = new Wechat(config)
 
 module.exports = (app) => {
 

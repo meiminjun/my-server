@@ -7,8 +7,20 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "启动wechat程序",
+            "program": "${workspaceFolder}/src/containers/example/index.js",
+            "env": {
+                "NAME": "wechat"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "启动koa程序",
-            "program": "${workspaceFolder}/src/bin/koa-app.js"
+            "program": "${workspaceFolder}/src/koaserver/index.js",
+            "env": {
+                "NAME": "koa"
+            }
         }
     ]
 }
