@@ -52,7 +52,7 @@
             "name": "wechat",
             "script": "./bin/start.js",
             "watch": [
-                "./containers/wechat"
+                "./containers/example"
             ],
             "error_file": "./logs/koa-err.log",
             "out_file": "./logs/koa-out.log",
