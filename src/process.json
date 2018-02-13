@@ -58,7 +58,7 @@
             "out_file": "./logs/koa-out.log",
             "log_date_format": "YYYY-MM-DD HH:mm Z",
             "env": {
-                "NAME": "koa"
+                "NAME": "wechat"
             },
             "env_dev": {
                 "NODE_ENV": "development",
