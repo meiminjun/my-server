@@ -12,13 +12,14 @@ let accessTokenJson = ''
 exports.getAccessToken = function() {
 	const TOKEN_PATH = this.accessTokenFilePath
 	const hasFile = fs.existsSync(TOKEN_PATH)
-	
+	console.log('打印地址:')
+	console.log(TOKEN_PATH)
   return new Promise(async (resolve, reject) => {
-	  if(!hasFile) {
-	  	log.error(`未找到 ${TOKEN_PATH} 文件，请创建 !`)
-		  resolve()
-		  return
-	  }
+	  // if(!hasFile) {
+	  // 	log.error(`未找到 ${TOKEN_PATH} 文件，请创建 !`)
+		//   resolve()
+		//   return
+	  // }
 	
 	  accessTokenJson = accessTokenJson || await readFileAsync(TOKEN_PATH, 'utf8')
 	  const url = util.format(this.apiURL.accessTokenApi, this.apiDomain, this.appID, this.appSecret)
