@@ -193,10 +193,10 @@ WeChat.prototype.handleMsg = function (ctx, next) {
   var buffer = [], that = this
   var query = ctx.request.body;
   console.log(query)
-  console.log('request:')
+  console.log('--------request-body-----------:')
   console.log(ctx.request);
-  console.log('body:');
-  console.log(ctx.body);
+  console.log('--------query:---------')
+  console.log(ctx.request.query)
   // 实例微信消息加解密
   var cryptoGraphy = new CryptoGraphy(that.config, query)
   console.log('cryptoGraphy:')
@@ -211,17 +211,18 @@ WeChat.prototype.handleMsg = function (ctx, next) {
     // 解析xml
     parseString(msgXml, { explicitArray: false }, function (err, result) {
       if (!err) {
+        console.log('没转换前信息:')
         console.log(result)
-        var result = result.xml
+        // var result = result.xml
         // 判断消息加解密方式
         if (query.encrypt_type == 'aes') {
           // 对加密数据解密
           result = cryptoGraphy.decryptMsg(result.Encrypt)
         }
         var toUser = result.ToUserName // 接收方微信
-        var fromUser = result.FromUserName// 发送仿微信
+        var fromUser = result.FromUserName// 发送方微信
         var reportMsg = '' // 声明回复消息的变量
-        console.log('接收方' + toUser)
+        console.log('发送方微信' + fromUser)
         console.log(result)
         // 判断消息类型
         if (result.MsgType.toLowerCase() === 'event') {
