@@ -209,8 +209,9 @@ WeChat.prototype.handleMsg = function (ctx, next) {
       if (!err) {
         console.log('没转换前信息:')
         console.log(result)
-        console.log('encrypt_type:' + query.encrypt_type)
         var result = result.xml
+        console.log('c')
+        console.log(result)
         // 判断消息加解密方式
         if (query.encrypt_type == 'aes') {
           // 对加密数据解密

@@ -59,6 +59,9 @@ CryptoGraphy.prototype.parseXmlToJSON = function (xml) {
 CryptoGraphy.prototype.decryptMsg = function (encryptMsg) {
     //获取签名认证
     var tempSignature = this.getMsgSignature(encryptMsg);
+    console.log('--------测试signature---------')
+    console.log(tempSignature)
+    console.log(this.msgSignature)
     //判断消息是否来自微信服务器
     if (this.msgSignature !== tempSignature) {
         throw new Error('msgSignature is not invalid')
