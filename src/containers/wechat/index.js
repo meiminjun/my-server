@@ -210,7 +210,7 @@ WeChat.prototype.handleMsg = function (ctx, next) {
         console.log('没转换前信息:')
         console.log(result)
         console.log('encrypt_type:' + query.encrypt_type)
-        // var result = result.xml
+        var result = result.xml
         // 判断消息加解密方式
         if (query.encrypt_type == 'aes') {
           // 对加密数据解密
@@ -220,6 +220,7 @@ WeChat.prototype.handleMsg = function (ctx, next) {
         var fromUser = result.FromUserName// 发送方微信
         var reportMsg = '' // 声明回复消息的变量
         console.log('发送方微信' + fromUser)
+        console.log('转换后信息')
         console.log(result)
         // 判断消息类型
         if (result.MsgType.toLowerCase() === 'event') {
