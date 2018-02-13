@@ -13,7 +13,7 @@ const w = new Wechat(config)
 module.exports = (app) => {
 
   // ----------------------页面服务---------------------------------------
-  router.get( '/index', HomeController.index )
+  router.get( '/', HomeController.index )
 
   router.get('/home', HomeController.home)
 
@@ -33,29 +33,29 @@ module.exports = (app) => {
   router.get('/getFundArchives/:code', Fund.getFundArchives) // 获取基金档案
 
   // ----------------------公众号服务---------------------------------------
-  router.get('/', async (ctx, next) => {
-    wechatApp.auth(ctx, next)
-  })
+  // router.get('/', async (ctx, next) => {
+  //   wechatApp.auth(ctx, next)
+  // })
 
-  //用于处理所有进入 80 端口 post 的连接请求
-  router.post('/', async (ctx, next) => {
-    wechatApp.handleMsg(ctx, next)
-  })
+  // //用于处理所有进入 80 端口 post 的连接请求
+  // router.post('/', async (ctx, next) => {
+  //   wechatApp.handleMsg(ctx, next)
+  // })
 
-  //用于请求获取 access_token
-  router.get('/getAccessToken', async (ctx, next) => {
-    try {
-      var data = await wechatApp.getAccessToken()
-      console.log('测试返回')
-      console.log(data)
-      ctx.send(data)
-    } catch (err) {
-      console.log('err')
-      console.log(err)
-      ctx.response.body = err
-    }
+  // //用于请求获取 access_token
+  // router.get('/getAccessToken', async (ctx, next) => {
+  //   try {
+  //     var data = await wechatApp.getAccessToken()
+  //     console.log('测试返回')
+  //     console.log(data)
+  //     ctx.send(data)
+  //   } catch (err) {
+  //     console.log('err')
+  //     console.log(err)
+  //     ctx.response.body = err
+  //   }
     
-  })
+  // })
 
 
 

@@ -9,6 +9,8 @@ if (env === 'wechat') {
 } else if (env === 'koa') {
     shell.exec('nodemon ./koaserver/index.js')
     console.log('启动koa成功')
+} else if (env === 'email') {
+    shell.exec('node ./containers/crawler/containers/sendEmail/index.js')
 }
 
 // var logDir = './logs/'

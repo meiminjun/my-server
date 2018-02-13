@@ -8,12 +8,13 @@
             "name": "send Email",
             "script": "./containers/crawler/containers/sendEmail/index.js",
             "watch": [
-                "crawler"
+                "./containers/crawler"
             ],
             "error_file": "./logs/crawler-err.log",
             "out_file": "./logs/crawler-out.log",
             "log_date_format": "YYYY-MM-DD HH:mm Z",
             "env": {
+                "NAME": "email",
                 "NODE_ENV": "production",
                 "REMOTE_ADDR": "http://www.example.com/"
             },
@@ -28,7 +29,7 @@
         },
         {
             "name": "koa-server",
-            "script": "./bin/koa-app.js",
+            "script": "./bin/start.js",
             "watch": [
                 "koaserver"
             ],
@@ -36,8 +37,28 @@
             "out_file": "./logs/koa-out.log",
             "log_date_format": "YYYY-MM-DD HH:mm Z",
             "env": {
-                "NODE_ENV": "production",
-                "REMOTE_ADDR": "http://www.example.com/"
+                "NAME": "koa"
+            },
+            "env_dev": {
+                "NODE_ENV": "development",
+                "REMOTE_ADDR": "http://wdev.example.com/"
+            },
+            "env_test": {
+                "NODE_ENV": "test",
+                "REMOTE_ADDR": "http://wtest.example.com/"
+            }
+        },
+        {
+            "name": "wechat",
+            "script": "./bin/start.js",
+            "watch": [
+                "./containers/wechat"
+            ],
+            "error_file": "./logs/koa-err.log",
+            "out_file": "./logs/koa-out.log",
+            "log_date_format": "YYYY-MM-DD HH:mm Z",
+            "env": {
+                "NAME": "koa"
             },
             "env_dev": {
                 "NODE_ENV": "development",
