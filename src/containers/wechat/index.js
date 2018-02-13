@@ -281,7 +281,7 @@ WeChat.prototype.handleMsg = function (ctx, next) {
         reportMsg = query.encrypt_type == 'aes' ? cryptoGraphy.encryptMsg(reportMsg) : reportMsg
         console.log('结果信息:')
         console.log(reportMsg)
-        ctx.res.setHeader('Content-Type', 'application/xml')
+        // ctx.res.setHeader('Content-Type', 'application/xml')
         ctx.res.end(reportMsg)
         // 返回给微信服务器
         // res.send(reportMsg)
