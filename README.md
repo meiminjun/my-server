@@ -19,6 +19,8 @@ nunjucks: `http://mozilla.github.io/nunjucks/cn/templating.html`
 
 肯德基：`http://order.kfc.com.cn/mwos/menu`
 
+我的服务器地址: `65.49.197.35`
+
 第一个小目标：
 做一个详情页面，添加一个产品，能够支付
 

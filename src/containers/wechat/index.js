@@ -192,6 +192,10 @@ WeChat.prototype.getAccessToken = function () {
 WeChat.prototype.handleMsg = function (ctx, next) {
   var buffer = [], that = this
   var query = ctx.request.query;
+  var req = ctx.req.body
+  console.log('------req--------')
+  console.log(req)
+  console.log('------query--------')
   console.log(query)
   console.log('--------request-body-----------:')
   console.log(ctx.request.body);
@@ -277,7 +281,8 @@ WeChat.prototype.handleMsg = function (ctx, next) {
         reportMsg = query.encrypt_type == 'aes' ? cryptoGraphy.encryptMsg(reportMsg) : reportMsg
         console.log('结果信息:')
         console.log(reportMsg)
-        ctx.response.body = reportMsg
+        ctx.res.setHeader('Content-Type', 'application/xml')
+        ctx.res.end(reportMsg)
         // 返回给微信服务器
         // res.send(reportMsg)
       } else {
