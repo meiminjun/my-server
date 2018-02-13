@@ -191,16 +191,12 @@ WeChat.prototype.getAccessToken = function () {
  */
 WeChat.prototype.handleMsg = function (ctx, next) {
   var buffer = [], that = this
-  var query = ctx.request.body;
+  var query = ctx.request.query;
   console.log(query)
   console.log('--------request-body-----------:')
-  console.log(ctx.request);
-  console.log('--------query:---------')
-  console.log(ctx.request.query)
+  console.log(ctx.request.body);
   // 实例微信消息加解密
   var cryptoGraphy = new CryptoGraphy(that.config, query)
-  console.log('cryptoGraphy:')
-  console.log(cryptoGraphy)
   // 监听 data 事件 用于接收数据
   ctx.req.on('data', function (data) {
     buffer.push(data)
@@ -213,6 +209,7 @@ WeChat.prototype.handleMsg = function (ctx, next) {
       if (!err) {
         console.log('没转换前信息:')
         console.log(result)
+        console.log('encrypt_type:' + query.encrypt_type)
         // var result = result.xml
         // 判断消息加解密方式
         if (query.encrypt_type == 'aes') {
