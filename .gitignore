@@ -17,4 +17,3 @@ package-lock.json
 package-lock.json
 wechat/logs/
 *.log
-access_token.json
